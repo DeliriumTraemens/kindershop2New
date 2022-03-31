@@ -32,9 +32,10 @@ public class ProductController {
 	
 	@GetMapping("/{id}")
 	public ProductPageDto getProdQuery(@PathVariable(value = "id") Long id,
-             @PageableDefault(size = PRODUCTS_PER_PAGE, sort={"id"}, direction= Sort.Direction.ASC) Pageable pageable){
-		
-		return prodService.getProdListByCat(id, pageable);
+	                                   @RequestParam(value="page")int page,
+	                                   @PageableDefault(size = PRODUCTS_PER_PAGE, sort={"id"}, direction= Sort.Direction.ASC) Pageable pageable){
+//
+		return prodService.getProdListByCat(id,pageable, page);
 	}
 	
 //
