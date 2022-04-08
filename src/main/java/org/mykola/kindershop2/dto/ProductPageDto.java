@@ -14,5 +14,13 @@ public class ProductPageDto {
 	private List<Product> products;
 	private int currentPage;
 	private int totalPages;
-
+	
+	@Override
+	public String toString() {
+		return "\nProductPageDto{" +
+				       "products=" + products +
+				       ", currentPage=" + currentPage +
+				       ", totalPages=" + totalPages +
+				       '}';
+	}
 }

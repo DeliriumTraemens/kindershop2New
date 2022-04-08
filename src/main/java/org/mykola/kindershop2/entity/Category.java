@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @ToString(of = {"id", "name", "creationDate"})
 @EqualsAndHashCode(of = {"id", "name",})
+
 @JsonIdentityInfo(
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property="id")
@@ -22,7 +23,7 @@ import java.util.Set;
 public class Category {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "category_id")
 	@JsonView(Views.IdName.class)
 	private Long id;
@@ -55,12 +56,20 @@ public class Category {
 	@Column(name ="date_modified")
 	private LocalDateTime modificationDate;
 	
+//	@JsonIgnore
+//	@Column(name ="top")
+//	short top = 0;
+//
+//	@JsonIgnore
+//	@Column(name ="column")
+//	int column = 0;
+	
 	@ManyToOne()
-	@JsonIgnore
+//	@JsonIgnore
 	@JoinColumn(name =  "parent_id")
 	private Category parent;
 //
-	@OneToMany(mappedBy="parent")
+	@OneToMany(mappedBy="parent",cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("id ASC ")
 	@JsonView(Views.IdName.class)
 //	@JsonIgnore

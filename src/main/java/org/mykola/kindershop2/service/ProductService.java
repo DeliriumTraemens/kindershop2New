@@ -1,22 +1,23 @@
 package org.mykola.kindershop2.service;
 
-import org.mykola.kindershop2.controller.ProductController;
 import org.mykola.kindershop2.dto.ProductPageDto;
 import org.mykola.kindershop2.entity.Product;
+import org.mykola.kindershop2.repository.ManufacturerRepository;
 import org.mykola.kindershop2.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ProductService {
+	private final ManufacturerRepository manRepo;
 	private final ProductRepository prodRepo;
+	
 	@Autowired
-	public ProductService(ProductRepository prodRepo) {
+	public ProductService(ManufacturerRepository manRepo, ProductRepository prodRepo) {
+		this.manRepo = manRepo;
 		this.prodRepo = prodRepo;
 	}
 	

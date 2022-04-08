@@ -47,9 +47,9 @@ public class Product {
 	@Column(name ="date_modified")
 	private LocalDateTime modificationDate;
 	
-//	@OneToOne
-//	@JoinColumn(name = "manufacturer_id")
-//	private Manufacturer manufacturer;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "manufacturer_id")
+	private Manufacturer manufacturer;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
