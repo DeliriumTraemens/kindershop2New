@@ -39,6 +39,13 @@ public class ProductController {
 		return prodService.getProdListByCat(id,pageable, page);
 	}
 	
+	@PostMapping("/search")
+	public List<Product> searchProduct(@RequestParam(value = "name") String name){
+		List<Product> searchList = prodService.liveSearch(name);
+		System.out.println(searchList);
+		return searchList;
+	}
+	
 //
 	
 }

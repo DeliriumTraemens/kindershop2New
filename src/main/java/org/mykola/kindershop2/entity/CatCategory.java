@@ -1,9 +1,12 @@
 package org.mykola.kindershop2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,4 +22,8 @@ public class CatCategory {
 //	@JsonView(Views.IdName.class)
 	@JoinColumn(name = "category_id" )
 	private String name;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categoryList")
+	private Set<ProdCat> productList = new HashSet<>();
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -75,7 +77,17 @@ public class Category {
 //	@JsonIgnore
 	private Set<Category> children = new HashSet<>();
 	
-//	@OneToMany(mappedBy = "category")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "oc_product_to_category",
+			joinColumns=@JoinColumn(name = "category_id"),
+			inverseJoinColumns=@JoinColumn(name = "product_id"))
+	private Set<Product> productList = new HashSet<>();
+	
+//	@ManyToMany(mappedBy = "categoryList")
+//	private Set<Product> productList = new HashSet<>();
+	
+	//	@ManyToMany(mappedBy = "category")
 //	private Set<Product> products = new HashSet<>();
 	
 	

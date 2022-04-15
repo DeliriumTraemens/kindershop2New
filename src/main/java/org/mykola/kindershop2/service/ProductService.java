@@ -37,4 +37,8 @@ public class ProductService {
 	public List<Object[]> getProdQuery(Long id) {
 		return prodRepo.getProducts(id);
 	}
+	
+	public List<Product> liveSearch(String name) {
+		return prodRepo.findByNameContaining(name);
+	}
 }
