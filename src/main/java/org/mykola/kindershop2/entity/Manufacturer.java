@@ -1,12 +1,15 @@
 package org.mykola.kindershop2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -33,5 +36,10 @@ public class Manufacturer {
 	
 	@Column(name = "image")
 	private String image;
+	
+	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER)
+//	@JsonIgnore
+//	@JoinColumn(name = "manufacturer_id")
+	private Set<ProdCat> prodCatList=new HashSet<>();
 	
 }

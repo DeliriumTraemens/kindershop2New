@@ -77,12 +77,12 @@ public class Category {
 //	@JsonIgnore
 	private Set<Category> children = new HashSet<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinTable(name = "oc_product_to_category",
-			joinColumns=@JoinColumn(name = "category_id"),
-			inverseJoinColumns=@JoinColumn(name = "product_id"))
-	private Set<Product> productList = new HashSet<>();
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@JoinTable(name = "oc_product_to_category",
+//			joinColumns=@JoinColumn(name = "category_id"),
+//			inverseJoinColumns=@JoinColumn(name = "product_id"))
+//	private Set<Product> productList = new HashSet<>();
 	
 //	@ManyToMany(mappedBy = "categoryList")
 //	private Set<Product> productList = new HashSet<>();

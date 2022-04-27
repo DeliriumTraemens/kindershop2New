@@ -12,4 +12,8 @@ public interface ProdCatRepository extends JpaRepository<ProdCat, Long> {
 	Set<ProdCat> findDistinctByNameContaining(String name);
 	
 	List<ProdCat> findByNameLike(String name);
+	
+	List<ProdCat> findByCatId(Long catId);
+	
+	List<ProdCat> findByTrash(boolean b);
 }

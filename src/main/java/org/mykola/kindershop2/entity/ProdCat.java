@@ -1,6 +1,7 @@
 package org.mykola.kindershop2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,13 +10,15 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "oc_product")
-@ToString(of = {"id", "name"})
+@ToString(of = {"id", "name", "catId", "categoryList"})
 @EqualsAndHashCode(of = {"id"})
 //@JsonIdentityInfo(
 //		generator= ObjectIdGenerators.PropertyGenerator.class,
@@ -35,12 +38,22 @@ public class ProdCat {
 	@Column(name = "category_id", table = "oc_product_to_category")
 	private Long catId;
 	
+	@Column(name = "image")
+	private String image;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "manufacturer_id")
+	private Manufacturer manufacturer;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
+//	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "oc_product_to_category",
-			joinColumns=@JoinColumn(name = "product_id"),
-			inverseJoinColumns=@JoinColumn(name = "category_id"))
-	private Set<CatCategory> categoryList=new HashSet<>();
+			joinColumns = @JoinColumn(name = "product_id"),
+			inverseJoinColumns = @JoinColumn(name = "category_id"))
+//	private Set<CatCategory> categoryList = new HashSet<>();
+	private List<CatCategory> categoryList = new ArrayList<>();
 	
-	
+	@Column(name ="trash", nullable=true)
+	private Boolean trash=true;
 }
