@@ -15,6 +15,8 @@ public class ProductPageDto {
 	private int currentPage;
 	private int totalPages;
 	
+	
+	
 	@Override
 	public String toString() {
 		return "\nProductPageDto{" +

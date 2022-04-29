@@ -30,27 +30,27 @@ public class ManufacturerServiceTest {
 	
 	
 	
-	@Test
-	public void cleanUpManufacturers() {
-		 List<Manufacturer> initialList=new ArrayList<>();
-		List<Manufacturer> emptyList=new ArrayList<>();
-		initialList = manRepo.findAll();
-		System.out.println("Amount of Manufacturers "+initialList.size());
-		
-		for (Manufacturer man : initialList) {
-			
-			if (man.getProdCatList().isEmpty()){
-				emptyList.add(man);
-			}
-			
-		}
-		System.out.println("\nList of empty mans contains "+ emptyList.size());
-		
-		for (Manufacturer manToRemove: emptyList){
-			manRepo.delete(manToRemove);
-		}
-		
-		}//method End
+//	@Test
+//	public void cleanUpManufacturers() {
+//		 List<Manufacturer> initialList=new ArrayList<>();
+//		List<Manufacturer> emptyList=new ArrayList<>();
+//		initialList = manRepo.findAll();
+//		System.out.println("Amount of Manufacturers "+initialList.size());
+//
+//		for (Manufacturer man : initialList) {
+//
+//			if (man.getProdCatList().isEmpty()){
+//				emptyList.add(man);
+//			}
+//
+//		}
+//		System.out.println("\nList of empty mans contains "+ emptyList.size());
+//
+//		for (Manufacturer manToRemove: emptyList){
+//			manRepo.delete(manToRemove);
+//		}
+//
+//		}//method End
 	
 	@Test
 	public void removeTrash(){

@@ -1,10 +1,14 @@
 package org.mykola.kindershop2.service;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.mykola.kindershop2.dto.ManufacturerPageDto;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.repository.ManufacturerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +32,7 @@ public class ManufacturerService {
 		return manRepo.findAll();
 	}
 	
-	public List<Manufacturer> editPicture(Long id, MultipartFile file) throws IOException {
+	public List<Manufacturer> editPicture(Long id, MultipartFile file, int page) throws IOException {
 		
 		Manufacturer edited = manRepo.findById(id).get();
 		
@@ -51,7 +55,20 @@ public class ManufacturerService {
 		return findAll();
 	}
 	
-	public void cleanUpManufacturers(){
 	
+	
+	public ManufacturerPageDto findAllPaged() {
+		Pageable pageRequest= PageRequest.of(0,9);
+		Page <Manufacturer> manPage = manRepo.findAll(pageRequest);
+		return new ManufacturerPageDto(manPage.getContent(),0,manPage.getTotalPages());
+	}
+	
+	public ManufacturerPageDto findRequestedPage(int page) {
+		Pageable pageRequest= PageRequest.of(page,9);
+		Page<Manufacturer> manPage = manRepo.findAll(pageRequest);
+		
+		return new ManufacturerPageDto(manPage.getContent(),
+		                               pageRequest.getPageNumber(),
+		                               manPage.getTotalPages());
 	}
 }

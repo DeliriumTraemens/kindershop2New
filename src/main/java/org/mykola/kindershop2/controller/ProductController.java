@@ -35,7 +35,7 @@ public class ProductController {
 	                                   @RequestParam(value="page")int page,
 	                                   @PageableDefault(size = PRODUCTS_PER_PAGE, sort={"id"}, direction= Sort.Direction.ASC) Pageable pageable){
 //
-		System.out.println(prodService.getProdListByCat(id,pageable, page));
+//		System.out.println(prodService.getProdListByCat(id,pageable, page));
 		return prodService.getProdListByCat(id,pageable, page);
 	}
 	

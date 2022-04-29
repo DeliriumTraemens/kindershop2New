@@ -55,5 +55,6 @@ public class ProdCat {
 	private List<CatCategory> categoryList = new ArrayList<>();
 	
 	@Column(name ="trash", nullable=true)
+	@JsonIgnore
 	private Boolean trash=true;
 }
