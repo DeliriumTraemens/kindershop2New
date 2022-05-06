@@ -1,6 +1,7 @@
 package org.mykola.kindershop2.repository;
 
 import org.mykola.kindershop2.entity.CatCategory;
+import org.mykola.kindershop2.entity.Manufacturer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,5 @@ import java.util.List;
 public interface CatCategoryRepository extends JpaRepository <CatCategory, Long>{
 	List<CatCategory> findByNameContaining(String name);
 	
-	List<CatCategory> findByProductListManufacturerId(Long id);
+	List<CatCategory> findByProductList_Manufacturer(Manufacturer manufacturer);
 }

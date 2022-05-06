@@ -37,6 +37,7 @@ public class Manufacturer {
 	@Column(name = "image")
 	private String image;
 	
+//	@JsonIgnore
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER)
 //	@JsonIgnore
 //	@JoinColumn(name = "manufacturer_id")

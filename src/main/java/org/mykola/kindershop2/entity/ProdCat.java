@@ -20,7 +20,7 @@ import java.util.Set;
 @Data
 @Table(name = "oc_product")
 @ToString(of = {"id", "name", "catId", "categoryList"})
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"id","name"})
 //@JsonIdentityInfo(
 //		generator= ObjectIdGenerators.PropertyGenerator.class,
 //		property="id")
@@ -36,13 +36,14 @@ public class ProdCat {
 	@Column(name = "name", table = "oc_product_description")
 	private String name;
 	
-	
+//	@JsonIgnore
 	@Column(name = "category_id", table = "oc_product_to_category")
 	private Long catId;
 	
 	@Column(name = "image")
 	private String image;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manufacturer_id")
 	private Manufacturer manufacturer;
