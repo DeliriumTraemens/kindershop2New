@@ -2,6 +2,7 @@ package org.mykola.kindershop2.service;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.mykola.kindershop2.dto.ManufacturerPageDto;
+import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.repository.ManufacturerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ManufacturerService {
 		return manRepo.findAll();
 	}
 	
-	public List<Manufacturer> editPicture(Long id, MultipartFile file, int page) throws IOException {
+	public ManufacturerPageDto editPicture(Long id, MultipartFile file, int page) throws IOException {
 		
 		Manufacturer edited = manRepo.findById(id).get();
 		
@@ -52,7 +53,8 @@ public class ManufacturerService {
 		
 		manRepo.save(edited);
 		
-		return findAll();
+//		return findAll();
+		return findRequestedPage(page);
 	}
 	
 	
@@ -70,5 +72,13 @@ public class ManufacturerService {
 		return new ManufacturerPageDto(manPage.getContent(),
 		                               pageRequest.getPageNumber(),
 		                               manPage.getTotalPages());
+	}
+	
+	public ManIdName findName(String hasbro) {
+		return manRepo.findByName(hasbro);
+	}
+	
+	public List<ManIdName> findAllProjected() {
+		return manRepo.getAllProjected();
 	}
 }

@@ -18,10 +18,15 @@ public class CatCatController {
 		this.catCatRepo = catCatRepo;
 	}
 	
+	@PostMapping("/catman")
+	public List<CatCategory> findByMan(@RequestParam("id")Long id){
+		return catCatRepo.findByProductListManufacturerId(id);
+	}
+	
 	@PostMapping
 	public List<CatCategory> liveSearch(@RequestParam("name")String name){
-		System.out.println("\n---===FOUND===---");
-		System.out.println(catCatRepo.findByNameContaining(name));
+//		System.out.println("\n---===FOUND===---");
+//		System.out.println(catCatRepo.findByNameContaining(name));
 		return catCatRepo.findByNameContaining(name);
 	}
 	

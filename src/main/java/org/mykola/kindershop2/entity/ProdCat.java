@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class ProdCat {
 	@Column(name = "name", table = "oc_product_description")
 	private String name;
 	
+	
 	@Column(name = "category_id", table = "oc_product_to_category")
 	private Long catId;
 	
@@ -51,7 +53,7 @@ public class ProdCat {
 	@JoinTable(name = "oc_product_to_category",
 			joinColumns = @JoinColumn(name = "product_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-//	private Set<CatCategory> categoryList = new HashSet<>();
+//	private Set<CatCategory> categoryList;// = new HashSet<>()
 	private List<CatCategory> categoryList = new ArrayList<>();
 	
 	@Column(name ="trash", nullable=true)

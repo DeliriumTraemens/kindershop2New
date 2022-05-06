@@ -27,7 +27,7 @@ public class ProdCatController {
 //		for (ProdCat found1:found){
 //			send.add(found1);
 //		}
-//		System.out.println(send);
+//		System.out.println("\n-----=== Result sent===----");
 		return prodCatRepo.findDistinctByNameContaining(name);
 	}
 }

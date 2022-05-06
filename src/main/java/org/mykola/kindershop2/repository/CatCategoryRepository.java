@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface CatCategoryRepository extends JpaRepository <CatCategory, Long>{
 	List<CatCategory> findByNameContaining(String name);
+	
+	List<CatCategory> findByProductListManufacturerId(Long id);
 }

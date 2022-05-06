@@ -2,13 +2,8 @@ package org.mykola.kindershop2.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mykola.kindershop2.entity.CatCategory;
-import org.mykola.kindershop2.entity.Category;
-import org.mykola.kindershop2.entity.Manufacturer;
-import org.mykola.kindershop2.entity.ProdCat;
-import org.mykola.kindershop2.repository.CatCategoryRepository;
-import org.mykola.kindershop2.repository.ManufacturerRepository;
-import org.mykola.kindershop2.repository.ProdCatRepository;
+import org.mykola.kindershop2.entity.*;
+import org.mykola.kindershop2.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,11 +18,21 @@ public class ManufacturerServiceTest {
 	
 	@Autowired
 	ProdCatRepository prodCatRepo;
+	@Autowired
+	ProductRepository productRepo;
 	
 	@Autowired
 	CatCategoryRepository catCatRepo;
+	@Autowired
+	CategoryRepository catRepo;
 	
-	
+	@Test
+	public void findProductsProjection(){
+		List<Object[]> projection=productRepo.getProducts(4276L);
+		for (Object obj: projection){
+			 
+		}
+	}
 	
 	
 //	@Test

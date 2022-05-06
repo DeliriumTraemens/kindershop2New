@@ -23,7 +23,7 @@ public class CatCategory {
 	@JoinColumn(name = "category_id" )
 	private String name;
 	
-//	@JsonIgnore
-//	@ManyToMany(mappedBy = "categoryList")
-//	private Set<ProdCat> productList = new HashSet<>();
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categoryList")
+	private Set<ProdCat> productList = new HashSet<>();
 }
