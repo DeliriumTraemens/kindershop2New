@@ -43,7 +43,7 @@ public class ProdCat {
 	@Column(name = "image")
 	private String image;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manufacturer_id")
 	private Manufacturer manufacturer;
@@ -54,7 +54,6 @@ public class ProdCat {
 	@JoinTable(name = "oc_product_to_category",
 			joinColumns = @JoinColumn(name = "product_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-//	private Set<CatCategory> categoryList;// = new HashSet<>()
 	private List<CatCategory> categoryList = new ArrayList<>();
 	
 	@Column(name ="trash", nullable=true)

@@ -52,6 +52,15 @@ public class ManufacturerController {
 		return manRepo.findById(id).get();
 	}
 	
+	@GetMapping("/catprod")
+	public List<ProdCat> manufacturCategoryProd(
+			@RequestParam(value="catId")Long catId,
+			@RequestParam(value="manId")Long manId){
+		
+		return manService.getCatProductsList(catId, manId);
+	}
+	
+	
 	@GetMapping("/cat/{id}")
 	public Set<CatIdNameDto> buildCategoryListByManufacturer(@PathVariable(value = "id")Long id){
 		Set<CatCategory>catManSet= new HashSet<>();

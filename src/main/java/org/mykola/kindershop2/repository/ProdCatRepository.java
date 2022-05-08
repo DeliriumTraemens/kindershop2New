@@ -1,5 +1,6 @@
 package org.mykola.kindershop2.repository;
 
+import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface ProdCatRepository extends JpaRepository<ProdCat, Long> {
 	List<ProdCat> findByCatId(Long catId);
 	
 	List<ProdCat> findByTrash(boolean b);
+	
+	List<ProdCat> findAllByCatIdAndManufacturer(Long catId, Manufacturer manufacturer);
 }

@@ -1,10 +1,13 @@
 package org.mykola.kindershop2.service;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.mykola.kindershop2.dto.ManufacturerPageDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
+import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
+import org.mykola.kindershop2.entity.ProdCat;
+import org.mykola.kindershop2.repository.CatCategoryRepository;
 import org.mykola.kindershop2.repository.ManufacturerRepository;
+import org.mykola.kindershop2.repository.ProdCatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,10 +26,14 @@ public class ManufacturerService {
 	private String uploadPath;
 	
 	private final ManufacturerRepository manRepo;
+	private final CatCategoryRepository catCatRepo;
+	private final ProdCatRepository prodCatRepo;
 	
 	@Autowired
-	public ManufacturerService(ManufacturerRepository manRepo) {
+	public ManufacturerService(ManufacturerRepository manRepo, CatCategoryRepository catCatRepo, ProdCatRepository prodCatRepo) {
 		this.manRepo = manRepo;
+		this.catCatRepo = catCatRepo;
+		this.prodCatRepo = prodCatRepo;
 	}
 	
 	public List<Manufacturer> findAll() {
@@ -80,5 +87,11 @@ public class ManufacturerService {
 	
 	public List<ManIdName> findAllProjected() {
 		return manRepo.getAllProjected();
+	}
+	
+	public List<ProdCat> getCatProductsList(Long catId, Long manId) {
+		Manufacturer manufacturer = manRepo.findById(manId).get();
+		List<ProdCat>prodsCatsList= prodCatRepo.findAllByCatIdAndManufacturer(catId,manufacturer);
+		return prodsCatsList;
 	}
 }
