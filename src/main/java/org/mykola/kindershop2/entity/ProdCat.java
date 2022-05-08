@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "oc_product")
-@ToString(of = {"id", "name", "catId", "categoryList"})
+@ToString(of = {"id", "name", "catId"})
 @EqualsAndHashCode(of = {"id","name"})
 //@JsonIdentityInfo(
 //		generator= ObjectIdGenerators.PropertyGenerator.class,
@@ -60,4 +60,6 @@ public class ProdCat {
 	@Column(name ="trash", nullable=true)
 	@JsonIgnore
 	private Boolean trash=true;
+	
+	
 }

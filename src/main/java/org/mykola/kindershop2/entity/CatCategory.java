@@ -28,4 +28,6 @@ public class CatCategory {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "categoryList")
 	private Set<ProdCat> productList = new HashSet<>();
+	
+	
 }

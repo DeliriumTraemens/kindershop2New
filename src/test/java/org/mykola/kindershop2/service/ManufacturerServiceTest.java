@@ -26,13 +26,19 @@ public class ManufacturerServiceTest {
 	@Autowired
 	CategoryRepository catRepo;
 	
-	@Test
-	public void findProductsProjection(){
-		List<Object[]> projection=productRepo.getProducts(4276L);
-		for (Object obj: projection){
-			 
-		}
-	}
+//	@Test
+//	public void findProductsProjection(){
+//		List<Object[]> projection=productRepo.getProducts(4276L);
+//		for (Object obj: projection){
+//
+//		}
+//	}
+	
+//	@Test
+//	public void prodCatExperiment(){
+//		CatCategory ct= catCatRepo.findById(1117L).get();
+////		System.out.println(ct);
+//	}
 	
 	
 //	@Test

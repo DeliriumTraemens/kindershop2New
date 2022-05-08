@@ -1,6 +1,7 @@
 package org.mykola.kindershop2.controller;
 
 import org.mykola.kindershop2.dto.ManufacturerPageDto;
+import org.mykola.kindershop2.dto.projections.CatIdNameDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
@@ -52,20 +53,23 @@ public class ManufacturerController {
 	}
 	
 	@GetMapping("/cat/{id}")
-	public Set<CatCategory> buildCategoryListByManufacturer(@PathVariable(value = "id")Long id){
+	public Set<CatIdNameDto> buildCategoryListByManufacturer(@PathVariable(value = "id")Long id){
 		Set<CatCategory>catManSet= new HashSet<>();
+		Set<CatIdNameDto> catIdNameDto= new HashSet<>();
 		Manufacturer man=manRepo.findById(id).get();
 		for(ProdCat prodCat: man.getProdCatList() ){
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
-				
-				catManSet.add(catCategory);
+//				CatIdNameDto catDto= new CatIdNameDto(catCategory.getId(),
+//				                                      catCategory.getName());
+				catIdNameDto.add(new CatIdNameDto(catCategory.getId(),
+				                                  catCategory.getName()));
 			}
 			
 		}
 		
 //		return man.getProdCatList();
-		System.out.println(catManSet);
-		return catManSet;
+		System.out.println(catIdNameDto);
+		return catIdNameDto;
 	}
 	
 	@GetMapping("/ref")
