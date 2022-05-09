@@ -25,6 +25,7 @@ public class ManufacturerServiceTest {
 	CatCategoryRepository catCatRepo;
 	@Autowired
 	CategoryRepository catRepo;
+
 	
 //	@Test
 //	public void findProductsProjection(){
@@ -33,7 +34,8 @@ public class ManufacturerServiceTest {
 //
 //		}
 //	}
-	
+
+
 //	@Test
 //	public void prodCatExperiment(){
 //		CatCategory ct= catCatRepo.findById(1117L).get();

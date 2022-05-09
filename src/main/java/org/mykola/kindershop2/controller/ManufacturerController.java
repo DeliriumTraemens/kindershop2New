@@ -47,6 +47,8 @@ public class ManufacturerController {
 		return manService.findAllPaged();
 	}
 	
+	
+	
 	@GetMapping("/{id}")
 	public Manufacturer findOneById(@PathVariable(value = "id")Long id){
 		return manRepo.findById(id).get();
