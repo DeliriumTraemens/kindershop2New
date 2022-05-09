@@ -1,5 +1,6 @@
 package org.mykola.kindershop2.controller;
 
+import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.ManufacturerPageDto;
 import org.mykola.kindershop2.dto.projections.CatIdNameDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
@@ -32,20 +33,16 @@ public class ManufacturerController {
 		this.manRepo = manRepo;
 	}
 	
-//	@GetMapping
-//	public ManufacturerPageDto getAll(){
-////	public ManufacturerPageDto getAll(@RequestParam(value="page")int page,
-////	                                  @PageableDefault(size = ITEMS_PER_PAGE, sort={"id"}, direction= Sort.Direction.ASC) Pageable pageable){
-////		List<Manufacturer> total=manService.findAll();
-////		System.out.println(total);
-////		return total;
-//		return manService.findAllPaged(0);
-//	}
 	
-	@GetMapping
-	public ManufacturerPageDto getInitialPaged(){
-		return manService.findAllPaged();
-	}
+//	Change to ManIdNamePic type
+//	@GetMapping
+//	public ManufacturerPageDto getInitialPaged(){
+//		return manService.findAllPaged();
+//	}
+@GetMapping
+public ManIdNamePickPageDto getInitialPaged(){
+	return manService.findAllPaged();
+}
 	
 	
 	

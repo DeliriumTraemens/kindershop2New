@@ -1,7 +1,9 @@
 package org.mykola.kindershop2.service;
 
+import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.ManufacturerPageDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
+import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNamePick;
 import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
@@ -66,10 +68,11 @@ public class ManufacturerService {
 	
 	
 	
-	public ManufacturerPageDto findAllPaged() {
+	public ManIdNamePickPageDto findAllPaged() {
 		Pageable pageRequest= PageRequest.of(0,9);
-		Page <Manufacturer> manPage = manRepo.findAll(pageRequest);
-		return new ManufacturerPageDto(manPage.getContent(),0,manPage.getTotalPages());
+//		Page <Manufacturer> manPage = manRepo.findAll(pageRequest);
+		Page <ManIdNamePick> manPage = manRepo.getAll(pageRequest);
+		return new ManIdNamePickPageDto(manPage.getContent(), 0, manPage.getTotalPages());
 	}
 	
 	public ManufacturerPageDto findRequestedPage(int page) {

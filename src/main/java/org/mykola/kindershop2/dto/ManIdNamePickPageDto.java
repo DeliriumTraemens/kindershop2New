@@ -11,11 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ManufacturerPageDto {
-	
-	private List<Manufacturer> manufacturers;
+public class ManIdNamePickPageDto {
+	private List<ManIdNamePick> manufacturers;//Changed type from manufacturer
 	private int currentPage;
 	private int totalPages;
-	
-	
 }
