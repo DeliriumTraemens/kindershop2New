@@ -1,13 +1,12 @@
 package org.mykola.kindershop2.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
@@ -44,9 +43,11 @@ public class ProdCat {
 	private String image;
 	
 //	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonManagedReference
+	@ManyToOne//(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manufacturer_id")
-	private Manufacturer manufacturer;
+//	private Manufacturer manufacturer;
+	private ManIdNameEntity manufacturer;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 //	@JsonIgnore

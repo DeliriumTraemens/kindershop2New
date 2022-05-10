@@ -19,7 +19,7 @@ import java.util.Set;
 @Data
 @Table(name = "oc_product")
 @ToString(of = {"id", "name", "creationDate","manufacturer"})
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"id","name"})
 //@JsonIdentityInfo(
 //		generator= ObjectIdGenerators.PropertyGenerator.class,
 //		property="id")
@@ -41,6 +41,7 @@ public class Product {
 	@Column(name = "name", table = "oc_product_description")
 	private String name;
 	
+//	@JsonIgnore
 	@Column(name = "description", table = "oc_product_description")
 	private String description;
 	

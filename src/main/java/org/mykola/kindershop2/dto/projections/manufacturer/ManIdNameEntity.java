@@ -1,15 +1,14 @@
-package org.mykola.kindershop2.entity;
+package org.mykola.kindershop2.dto.projections.manufacturer;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.mykola.kindershop2.entity.ProdCat;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,12 +20,8 @@ import java.util.Set;
 //		property = "id")
 @Table(name = "oc_manufacturer")
 
-@SecondaryTables({
-		@SecondaryTable(name = "oc_manufacturer_description",
-				pkJoinColumns = @PrimaryKeyJoinColumn(name = "manufacturer_id"))
-})
 
-public class Manufacturer {
+public class ManIdNameEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "manufacturer_id")
@@ -35,12 +30,10 @@ public class Manufacturer {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "image")
+	@Column(name ="image")
 	private String image;
 	
-	@JsonBackReference
-	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER)
-//	@JoinColumn(name = "manufacturer_id")
-	private Set<ProdCat> prodCatList=new HashSet<>();
-	
+//	@JsonBackReference
+//	@OneToMany(mappedBy="manufacturer")
+//	private Set<ProdCat>productSet;
 }

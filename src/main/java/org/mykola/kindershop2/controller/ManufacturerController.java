@@ -39,12 +39,20 @@ public class ManufacturerController {
 //	public ManufacturerPageDto getInitialPaged(){
 //		return manService.findAllPaged();
 //	}
-@GetMapping
-public ManIdNamePickPageDto getInitialPaged(){
-	return manService.findAllPaged();
-}
+	@GetMapping
+	public ManIdNamePickPageDto getInitialPaged(){
+		return manService.findAllPaged();
+	}
+	//Old Version
+//	@GetMapping("/page")
+//	public ManufacturerPageDto getManufacturerPage(@RequestParam(value = "page") int page){
+//		return manService.findRequestedPage(page);
+//	}
 	
-	
+	@GetMapping("/page")
+	public ManIdNamePickPageDto getManufacturerPage(@RequestParam(value = "page") int page){
+		return manService.findRequestedPage(page);
+	}
 	
 	@GetMapping("/{id}")
 	public Manufacturer findOneById(@PathVariable(value = "id")Long id){
@@ -90,15 +98,10 @@ public ManIdNamePickPageDto getInitialPaged(){
 		return manService.findAllProjected();
 	}
 	
-	@GetMapping("/page")
-	public ManufacturerPageDto getManufacturerPage(@RequestParam(value = "page") int page){
-		System.out.println("-------------------RECIEVED");
-		System.out.println(manService.findRequestedPage(page).toString());
-		return manService.findRequestedPage(page);
-	}
+	
 	
 	@PostMapping("/editPic")
-	public ManufacturerPageDto editPic(@RequestParam("id")Long id,
+	public ManIdNamePickPageDto editPic(@RequestParam("id")Long id,
 	                                  @RequestParam("file")MultipartFile file,
 	                                  @RequestParam("page") int page) throws IOException {
 		return manService.editPicture(id, file, page);

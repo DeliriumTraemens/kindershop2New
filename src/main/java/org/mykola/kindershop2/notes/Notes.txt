@@ -1,0 +1,183 @@
+В гисте три сущности, слои контроллера-сервиса-репозитория, и результат из Postman
+
+--------------------------======== Основная (Родительская?) Сущность =========--------------
+@Entity
+@Data
+@Table(name = "oc_product")
+@ToString(of = {"id", "name", "catId"})
+@EqualsAndHashCode(of = {"id","name"})
+@JsonIdentityInfo(
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property="id")
+@SecondaryTables({
+		@SecondaryTable(name = "oc_product_description", pkJoinColumns = @PrimaryKeyJoinColumn(name = "product_id")),
+		@SecondaryTable(name = "oc_product_to_category", pkJoinColumns = @PrimaryKeyJoinColumn(name = "product_id"))})
+public class ProdCat {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "product_id")
+	private Long id;
+
+	@Column(name = "name", table = "oc_product_description")
+	private String name;
+
+
+	@Column(name = "category_id", table = "oc_product_to_category")
+	private Long catId;
+
+	@Column(name = "image")
+	private String image;
+
+
+	@JsonManagedReference
+	@ManyToOne//(fetch = FetchType.EAGER)
+	@JoinColumn(name = "manufacturer_id")
+	private ManIdNameEntity manufacturer;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "oc_product_to_category",
+			joinColumns = @JoinColumn(name = "product_id"),
+			inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private List<CatCategory> categoryList = new ArrayList<>();
+
+	@Column(name ="trash", nullable=true)
+	@JsonIgnore
+	private Boolean trash=true;
+
+
+}
+
+--------------------------======= Дочка - производитель ==========--------------
+@Entity
+@Data
+@ToString(of = {"id", "name"})
+@EqualsAndHashCode(of = {"id", "name"})
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
+@Table(name = "oc_manufacturer")
+
+
+public class ManIdNameEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "manufacturer_id")
+	private Long id;
+
+	@Column(name = "name")
+	private String name;
+
+	@JsonBackReference
+	@OneToMany(mappedBy="manufacturer")
+	private Set<ProdCat>productSet;
+}
+-------------------========== Дочка - категория =========----------------
+@Entity
+@Data
+@EqualsAndHashCode(of = {"id","name"})
+@Table(name = "oc_category")
+@SecondaryTable(name = "oc_category_description",pkJoinColumns = @PrimaryKeyJoinColumn(name = "category_id"))
+public class CatCategory {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name ="category_id")
+	private Long id;
+
+	@Column(name = "name",table="oc_category_description")
+//	@JsonView(Views.IdName.class)
+	@JoinColumn(name = "category_id" )
+	private String name;
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categoryList")
+	private Set<ProdCat> productList = new HashSet<>();
+
+	=========================== Контроллер ==============================
+	@GetMapping("/blahblah")
+    	public List<ProdCat> manufacturCategoryProd(
+    			@RequestParam(value="catId")Long catId,
+    			@RequestParam(value="manId")Long manId){
+
+    		return manService.getCatProductsList(catId, manId);
+    	}
+    ========================== Сервис =====================================
+    	public List<ProdCat> getCatProductsList(Long catId, Long manId) {
+        		ManIdNameEntity manufacturer = manIdNameDtoRepo.findById(manId).get();
+            	List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer ,catId );
+        		return prodsCatsList;
+        	}
+     ========================= Репозиторий prodCatRepo ======================
+     List<ProdCat> findByManufacturerAndCatId(ManIdNameEntity manufacturer, Long catId);
+
+    ===========================Часть запроса из Postman  -- Собственно САМА ПРОБЛЕМА =====================
+    В первом объекте поле manufacturer выдано как надо:
+    "manufacturer": {
+                "id": 13,
+                "name": "Магникон"
+            },
+    но уже во втором объекте (как и в последующих) от manufacturer остается только его "id":
+     -- "manufacturer": 13, --
+
+
+    {
+        "id": 132468,
+        "name": "Магнитный конструктор \"Луноход\", 40 деталей Магникон",
+        "catId": 2145,
+        "image": "catalog/YML-V3-Toys/magnitnye-3d-konstruktory/IMG535b39dfe1f6def8319b2b0832de1444.jpg",
+        "manufacturer": {
+            "id": 13,
+            "name": "Магникон"
+        },
+        "categoryList": [
+            {
+                "id": 1143,
+                "name": "Развивающие игры"
+            },
+            {
+                "id": 1144,
+                "name": "РАЗВИТИЕ И ТВОРЧЕСТВО"
+            },
+
+        ]
+    },
+    {
+        "id": 137385,
+        "name": "Магнитный конструктор \"Комета\", 30 деталей Магникон",
+        "catId": 2145,
+        "image": "catalog/YML-V3-Toys/magnitnye-3d-konstruktory/IMGfe34cc8dc33feafce97b44ccaae26a30.jpg",
+        "manufacturer": 13,
+        "categoryList": [
+            {
+                "id": 1143,
+                "name": "Развивающие игры"
+            },
+            {
+                "id": 1144,
+                "name": "РАЗВИТИЕ И ТВОРЧЕСТВО"
+            },
+
+            {
+                "id": 2145,
+                "name": "Магнитные 3D конструкторы"
+            }
+        ]
+    },
+    {
+        "id": 144043,
+        "name": "Магнитный 3D-конструктор \"Луноход\", 40 деталей Магникон",
+        "catId": 2145,
+        "image": "catalog/YML-V3-Toys/magnitnye-3d-konstruktory/IMGd4ba503bd5801291a0f4fb4b9e46ef3c.png",
+        "manufacturer": 13,
+        "categoryList": [
+            {
+                "id": 1143,
+                "name": "Развивающие игры"
+            },
+
+            {
+                "id": 2145,
+                "name": "Магнитные 3D конструкторы"
+            }
+        ]
+    },
