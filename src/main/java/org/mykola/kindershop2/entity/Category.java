@@ -17,9 +17,9 @@ import java.util.Set;
 @ToString(of = {"id", "name", "creationDate"})
 @EqualsAndHashCode(of = {"id", "name",})
 
-@JsonIdentityInfo(
-		generator= ObjectIdGenerators.PropertyGenerator.class,
-		property="id")
+//@JsonIdentityInfo(
+//		generator= ObjectIdGenerators.PropertyGenerator.class,
+//		property="id")
 @Table(name = "oc_category")
 @SecondaryTable(name = "oc_category_description",pkJoinColumns = @PrimaryKeyJoinColumn(name = "category_id"))
 public class Category {

@@ -1,7 +1,6 @@
 package org.mykola.kindershop2.controller;
 
 import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
-import org.mykola.kindershop2.dto.ManufacturerPageDto;
 import org.mykola.kindershop2.dto.projections.CatIdNameDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.entity.CatCategory;
@@ -73,20 +72,24 @@ public class ManufacturerController {
 		Set<CatCategory>catManSet= new HashSet<>();
 		Set<CatIdNameDto> catIdNameDto= new HashSet<>();
 		Manufacturer man=manRepo.findById(id).get();
+//		TODO Вероятно нужна простая ДТО-Энтить с чилдренСетом , фильтрованном по продукт - производитель
 		for(ProdCat prodCat: man.getProdCatList() ){
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
-//				CatIdNameDto catDto= new CatIdNameDto(catCategory.getId(),
-//				                                      catCategory.getName());
 				catIdNameDto.add(new CatIdNameDto(catCategory.getId(),
-				                                  catCategory.getName()));
+				                                  catCategory.getName(), catCategory.getParentId()));
 			}
-			
 		}
-		
 //		return man.getProdCatList();
 		System.out.println(catIdNameDto);
 		return catIdNameDto;
 	}
+	
+//	--------------------------------------------------------------TEST---------------
+
+
+
+
+//	--------------------------------------------------------------
 	
 	@GetMapping("/ref")
 	public ManIdName getByName(){

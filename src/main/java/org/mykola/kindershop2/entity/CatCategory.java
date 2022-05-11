@@ -1,5 +1,6 @@
 package org.mykola.kindershop2.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
@@ -25,9 +26,24 @@ public class CatCategory {
 	@JoinColumn(name = "category_id" )
 	private String name;
 	
+	@Column(name = "parent_id")
+	private Long parentId;
+	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "categoryList")
 	private Set<ProdCat> productList = new HashSet<>();
+	
+//	@ManyToOne()
+//	@JsonIgnore
+//	@JoinColumn(name =  "parent_id")
+//	private CatCategory parent;
+//	//
+//	@OneToMany(mappedBy="parent",cascade = CascadeType.ALL, orphanRemoval = true)
+//	@OrderBy("id ASC ")
+//	@JsonView(Views.IdName.class)
+////	@JsonIgnore
+//	@JsonBackReference
+//	private Set<CatCategory> children = new HashSet<>();
 	
 	
 }

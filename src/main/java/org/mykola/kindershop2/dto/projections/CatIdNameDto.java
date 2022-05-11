@@ -6,12 +6,15 @@ public class CatIdNameDto {
 	private Long id;
 	private String name;
 	
+	private Long parentId;
+	
 	public CatIdNameDto() {
 	}
 	
-	public CatIdNameDto(Long id, String name) {
+	public CatIdNameDto(Long id, String name, Long parentId) {
 		this.id = id;
 		this.name = name;
+		this.parentId = parentId;
 	}
 	
 	public Long getId() {
@@ -55,5 +58,13 @@ public class CatIdNameDto {
 				       "id=" + id +
 				       ", name='" + name + '\'' +
 				       '}';
+	}
+	
+	public Long getParentId() {
+		return parentId;
+	}
+	
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 }
