@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @Entity
 @ToString(of = {"id", "name", "creationDate"})
-@EqualsAndHashCode(of = {"id", "name",})
+@EqualsAndHashCode(of = {"id", "name"})
 
 //@JsonIdentityInfo(
 //		generator= ObjectIdGenerators.PropertyGenerator.class,

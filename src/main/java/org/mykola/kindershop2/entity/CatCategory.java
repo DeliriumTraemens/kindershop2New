@@ -29,7 +29,8 @@ public class CatCategory {
 	@Column(name = "parent_id")
 	private Long parentId;
 	
-	@JsonIgnore
+	@JsonBackReference
+	
 	@ManyToMany(mappedBy = "categoryList")
 	private Set<ProdCat> productList = new HashSet<>();
 	

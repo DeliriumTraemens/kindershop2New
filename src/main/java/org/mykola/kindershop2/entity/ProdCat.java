@@ -51,6 +51,7 @@ public class ProdCat {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 //	@JsonIgnore
+	@JsonManagedReference
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "oc_product_to_category",
 			joinColumns = @JoinColumn(name = "product_id"),

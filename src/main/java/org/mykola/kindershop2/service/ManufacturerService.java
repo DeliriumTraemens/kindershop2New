@@ -4,12 +4,17 @@ import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameEntity;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNamePick;
+import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
+import org.mykola.kindershop2.entity.tmpDto.CatTemp;
+import org.mykola.kindershop2.entity.tmpDto.CatTempSave;
 import org.mykola.kindershop2.repository.CatCategoryRepository;
 import org.mykola.kindershop2.repository.ManIdNameEntityRepo;
 import org.mykola.kindershop2.repository.ManufacturerRepository;
 import org.mykola.kindershop2.repository.ProdCatRepository;
+import org.mykola.kindershop2.repository.temp.CatTempRepo;
+import org.mykola.kindershop2.repository.temp.CatTempSaveRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -20,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,14 +37,18 @@ public class ManufacturerService {
 	private final ManufacturerRepository manRepo;
 	private final ManIdNameEntityRepo manIdNameDtoRepo;
 	private final CatCategoryRepository catCatRepo;
+	private final CatTempRepo catTempRepo;
+	private final CatTempSaveRepo catTempSaveRepo;
 	private final ProdCatRepository prodCatRepo;
 	
 	@Autowired
-	public ManufacturerService(ManufacturerRepository manRepo, ManIdNameEntityRepo manIdNameDtoRepo, CatCategoryRepository catCatRepo, ProdCatRepository prodCatRepo) {
+	public ManufacturerService(ManufacturerRepository manRepo, ManIdNameEntityRepo manIdNameDtoRepo, CatCategoryRepository catCatRepo, CatTempRepo catTempRepo, CatTempSaveRepo catTempSaveRepo, ProdCatRepository prodCatRepo) {
 		this.manRepo = manRepo;
 		this.manIdNameDtoRepo = manIdNameDtoRepo;
 		
 		this.catCatRepo = catCatRepo;
+		this.catTempRepo = catTempRepo;
+		this.catTempSaveRepo = catTempSaveRepo;
 		this.prodCatRepo = prodCatRepo;
 	}
 	
@@ -101,5 +111,30 @@ public class ManufacturerService {
 //		Set<ProdCat>prodsCatsList= prodCatRepo.findByCatIdAndManufacturer(catId, manufacturer);
 		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer ,catId );
 		return prodsCatsList;
+	}
+	
+	public Set<CatTemp> manCategorySorted(Long id) {
+		//1
+		Set<CatTemp> initialList=new HashSet<>();
+		
+		//2
+		Manufacturer man = manRepo.findById(id).get();
+		
+		//3
+		for (ProdCat prodCat : man.getProdCatList()) {
+			for (CatCategory catCategory : prodCat.getCategoryList()) {
+				//May be add CatTempDto = просто класс с парентАйди, и по нему уже мапить энтить?
+				initialList.add(new CatTemp(catCategory.getId(),  catCategory.getName()));
+			}
+		} //InitialList of total categories List end
+		
+//		for (CatTemp catTempSave : initialList) {
+//			catTempRepo.save(catTempSave);
+//
+//		}
+		
+		
+		return initialList;
+//		return (Set<CatTemp>) catTempRepo.findAll();
 	}
 }
