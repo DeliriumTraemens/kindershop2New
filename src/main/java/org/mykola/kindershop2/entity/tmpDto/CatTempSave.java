@@ -21,8 +21,8 @@ public class CatTempSave {
 	@Column(name ="cattemp_id")
 	private Long id;
 	
-//	@Column(name ="parent_id")
-//	private Long parentId;
+	@Column(name ="parent_id")
+	private Long parentId;
 	
 	@Column(name ="name")
 	private String name;
@@ -30,8 +30,9 @@ public class CatTempSave {
 	public CatTempSave() {
 	}
 	
-	public CatTempSave(Long id,  String name) {
+	public CatTempSave(Long id, Long parentId, String name) {
 		this.id = id;
+		this.parentId = parentId;
 		this.name = name;
 	}
 }

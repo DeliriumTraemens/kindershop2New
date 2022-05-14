@@ -48,7 +48,7 @@ public class CatTemp implements Serializable {
 		return "\nCatTemp{" +
 				       "id=" + id +
 				       ", name='" + name + '\'' +
-				       ", children=" + children +
+				       ", \n\tchildren=" + children +
 				       '}';
 	}
 }

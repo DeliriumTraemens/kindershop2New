@@ -1,5 +1,6 @@
 package org.mykola.kindershop2.service;
 
+import org.mykola.kindershop2.dto.CatList;
 import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameEntity;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ManufacturerService {
@@ -42,7 +45,10 @@ public class ManufacturerService {
 	private final ProdCatRepository prodCatRepo;
 	
 	@Autowired
-	public ManufacturerService(ManufacturerRepository manRepo, ManIdNameEntityRepo manIdNameDtoRepo, CatCategoryRepository catCatRepo, CatTempRepo catTempRepo, CatTempSaveRepo catTempSaveRepo, ProdCatRepository prodCatRepo) {
+	public ManufacturerService(
+			ManufacturerRepository manRepo, ManIdNameEntityRepo manIdNameDtoRepo, CatCategoryRepository catCatRepo, CatTempRepo catTempRepo,
+			CatTempSaveRepo catTempSaveRepo, ProdCatRepository prodCatRepo
+	                          ) {
 		this.manRepo = manRepo;
 		this.manIdNameDtoRepo = manIdNameDtoRepo;
 		
@@ -109,32 +115,84 @@ public class ManufacturerService {
 	public List<ProdCat> getCatProductsList(Long catId, Long manId) {
 		ManIdNameEntity manufacturer = manIdNameDtoRepo.findById(manId).get();
 //		Set<ProdCat>prodsCatsList= prodCatRepo.findByCatIdAndManufacturer(catId, manufacturer);
-		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer ,catId );
+		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer, catId);
 		return prodsCatsList;
 	}
 	
-	public Set<CatTemp> manCategorySorted(Long id) {
-		//1
-		Set<CatTemp> initialList=new HashSet<>();
+	//          ==================--------@ manCategorySorted @----------=========================
+	//<<<>>>\\
+	public List<CatTemp> manCategorySorted(Long id) {
+//	public Set<CatTemp> manCategorySorted(Long id) {
+		//a -- cleanUp table
+		catTempRepo.deleteAll();
 		
-		//2
+		//1 -- Declare and init working Collections
+		Set<CatTemp> initialList = new HashSet<>();
+		Set<CatList> initialListStart = new HashSet<>();
+		Set<CatList> rootSet;
+		
+		//2 - get requested Manufacturer
 		Manufacturer man = manRepo.findById(id).get();
 		
-		//3
+		//3 Populate working collections
 		for (ProdCat prodCat : man.getProdCatList()) {
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
-				//May be add CatTempDto = просто класс с парентАйди, и по нему уже мапить энтить?
-				initialList.add(new CatTemp(catCategory.getId(),  catCategory.getName()));
+				//May be add CatTempSave = просто класс с парентАйди, и по нему уже мапить энтить? -YYYEEEEE
+				catTempRepo.save(new CatTemp(catCategory.getId(), catCategory.getName()));
+				catTempSaveRepo.save(new CatTempSave(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
+				//Cразу сохраняем в базу?
+				
+				//И ВОТ ТУТА маппим!!!!!
+				// тупо забираем цыклом первый об
+				
+				initialList.add(new CatTemp(catCategory.getId(), catCategory.getName()));
+				initialListStart.add(new CatList(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
 			}
 		} //InitialList of total categories List end
+		int i=0;
+		for (CatTemp catTemp: catTempRepo.findAll()){
+			List<CatList> collect = initialListStart.stream().filter(c -> c.getParentId().equals(catTemp.getId())).collect(Collectors.toList());
+			if(!collect.isEmpty()){
+				CatList preParent = collect.get(0);
+				CatTemp parent= catTempRepo.findById(preParent.getId()).get();
+				
+				System.out.println("=========Parent=============");
+				System.out.println(parent);
+				
+				catTemp.setParent(parent);
+				catTempRepo.save(catTemp);
+			}
+			
+			System.out.println("=========collect"+i);
+			System.out.println(collect);
+			i++;
+//			Long idc=found.getId();
+//			System.out.println("=========Idc=========");
+//			System.out.println(idc);
+//			CatTemp parent = catTempRepo.findById(idc).get();
+//			System.out.println("========parentFound======");
+//			System.out.println(parent);
+//			catTemp.setParent(parent);
+//			catTempRepo.save(catTemp);
+		}
 		
-//		for (CatTemp catTempSave : initialList) {
-//			catTempRepo.save(catTempSave);
-//
-//		}
-		
-		
-		return initialList;
-//		return (Set<CatTemp>) catTempRepo.findAll();
+		return catTempRepo.findByParentId(0L);
 	}
+		
+			//			Long cid= parent1.getId();
+//			Long parentId=parent1.getParentId();
+//			System.out.println("===============parent===============");
+//			System.out.println(parent1);
+//			//			CatList parent = взять из сета объект по parentId ;
+//			CatList cLParent = initialListStart.stream().filter(c->c.getId().equals(parentId)).findFirst().get();
+//			System.out.println("===============cLPparent===============");
+//			System.out.println(cLParent);
+
+//
+
+
+//
+
+//		System.out.println(initialList);
+//		return initialList;
 }

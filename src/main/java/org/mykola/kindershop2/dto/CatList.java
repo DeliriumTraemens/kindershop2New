@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.mykola.kindershop2.entity.tmpDto.CatTemp;
 
 import java.util.Set;
 
@@ -22,6 +23,8 @@ public class CatList {
 	private CatList parent;
 	
 	private CatList child;
+	
+	private CatTemp parent1;
 	
 //	@JsonBackReference
 	private Set<CatList> children;
