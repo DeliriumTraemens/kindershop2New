@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -92,7 +89,7 @@ public class ManufacturerController {
 //	--------------------------------------------------------------TEST---------------
 	//2
 	@GetMapping("/test/cattemp/{id}")
-	public List<CatTemp> manCategorySorted(@PathVariable(value ="id") Long id){
+	public CatTemp manCategorySorted(@PathVariable(value ="id") Long id){
 		return manService.manCategorySorted(id);
 	}
 	

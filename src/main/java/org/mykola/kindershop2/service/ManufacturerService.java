@@ -21,15 +21,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,15 +118,20 @@ public class ManufacturerService {
 	
 	//          ==================--------@ manCategorySorted @----------=========================
 	//<<<>>>\\
-	public List<CatTemp> manCategorySorted(Long id) {
+	public CatTemp manCategorySorted(Long id) {
 //	public Set<CatTemp> manCategorySorted(Long id) {
 		//a -- cleanUp table
 		catTempRepo.deleteAll();
+		catTempSaveRepo.deleteAll();
 		
 		//1 -- Declare and init working Collections
 		Set<CatTemp> initialList = new HashSet<>();
 		Set<CatList> initialListStart = new HashSet<>();
+		List<CatTempSave> catTempStartSet= new ArrayList<>();
 		Set<CatList> rootSet;
+		
+		CatTempSave rootCat = catTempSaveRepo.save(new CatTempSave(0L,null,"Root"));
+		CatTemp rootCatTemp = catTempRepo.save(new CatTemp(0L,"RootTemp"));
 		
 		//2 - get requested Manufacturer
 		Manufacturer man = manRepo.findById(id).get();
@@ -138,57 +140,63 @@ public class ManufacturerService {
 		for (ProdCat prodCat : man.getProdCatList()) {
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
 				//May be add CatTempSave = просто класс с парентАйди, и по нему уже мапить энтить? -YYYEEEEE
-				catTempRepo.save(new CatTemp(catCategory.getId(), catCategory.getName()));
 				catTempSaveRepo.save(new CatTempSave(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
-				//Cразу сохраняем в базу?
+				
+				//CatTemp initially is EMPTY
+//				catTempRepo.save(new CatTemp(catCategory.getId(), catCategory.getName()));
 				
 				//И ВОТ ТУТА маппим!!!!!
 				// тупо забираем цыклом первый об
 				
-				initialList.add(new CatTemp(catCategory.getId(), catCategory.getName()));
-				initialListStart.add(new CatList(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
+				//Ahtung!!!
+//				initialList.add(new CatTemp(catCategory.getId(), catCategory.getName()));
+//				initialListStart.add(new CatList(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
+//				initialListStart.add(new CatList(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
 			}
 		} //InitialList of total categories List end
+		catTempStartSet = catTempSaveRepo.findAll();
 		int i=0;
-		for (CatTemp catTemp: catTempRepo.findAll()){
-			List<CatList> collect = initialListStart.stream().filter(c -> c.getParentId().equals(catTemp.getId())).collect(Collectors.toList());
-			if(!collect.isEmpty()){
-				CatList preParent = collect.get(0);
-				CatTemp parent= catTempRepo.findById(preParent.getId()).get();
+		for (CatTempSave catTempSave : catTempSaveRepo.findAll()){
+			System.out.println("========/////=========");
+//			if(catTempSave.getId() != 0L){
 				
-				System.out.println("=========Parent=============");
-				System.out.println(parent);
-				
-				catTemp.setParent(parent);
-				catTempRepo.save(catTemp);
-			}
-			
-			System.out.println("=========collect"+i);
-			System.out.println(collect);
-			i++;
-//			Long idc=found.getId();
-//			System.out.println("=========Idc=========");
-//			System.out.println(idc);
-//			CatTemp parent = catTempRepo.findById(idc).get();
-//			System.out.println("========parentFound======");
-//			System.out.println(parent);
-//			catTemp.setParent(parent);
-//			catTempRepo.save(catTemp);
+//				CatTempSave preParent = catTempStartSet.stream().filter(cat -> cat.getId().equals(cat.getParentId())).findFirst().get();
+//			List<CatTempSave> collect = catTempStartSet.stream().filter(cat -> cat.getId().equals(cat.getParentId())).collect(Collectors.toList());
+//			CatTempSave preParent = collect.get(0);
+//			CatTemp parent = new CatTemp(preParent.getId(),preParent.getName());
+//			System.out.println("============PRE AND PARENT==============");
+//			System.out.println(preParent + "   "+parent);
+//				catTempRepo.save(parent);
+//
+//				CatTemp catTemp= new CatTemp(catTempSave.getId(), catTempSave.getName());
+//				catTemp.setParent(parent);
+//
+//				catTempRepo.save(catTemp);
+//			}
 		}
 		
-		return catTempRepo.findByParentId(0L);
+//		for (CatTemp catTemp: catTempRepo.findAll()){
+//			List<CatList> collect = initialListStart.stream().filter(c -> c.getParentId().equals(catTemp.getId())).collect(Collectors.toList());
+//			if(!collect.isEmpty()){
+//				CatList preParent = collect.get(0);
+//				CatTemp parent= catTempRepo.findById(preParent.getId()).get();
+//
+//				System.out.println("=========Parent=============");
+//				System.out.println(parent);
+//
+//				catTemp.setParent(parent);
+//				catTempRepo.save(catTemp);
+//			}
+//
+//			System.out.println("=========collect"+i);
+//			System.out.println(collect);
+//			i++;
+//		}
+		
+//		return catTempRepo.findAll();
+		return catTempRepo.findById(0L).get();
 	}
 		
-			//			Long cid= parent1.getId();
-//			Long parentId=parent1.getParentId();
-//			System.out.println("===============parent===============");
-//			System.out.println(parent1);
-//			//			CatList parent = взять из сета объект по parentId ;
-//			CatList cLParent = initialListStart.stream().filter(c->c.getId().equals(parentId)).findFirst().get();
-//			System.out.println("===============cLPparent===============");
-//			System.out.println(cLParent);
-
-//
 
 
 //
