@@ -16,4 +16,6 @@ public interface CatalogRepository extends JpaRepository<Catalog,Long> {
 	
 	@EntityGraph(attributePaths={"parent"})
 	Optional<Catalog> findById(Long id);
+	
+	Optional<Catalog> findByIdAndStatus(Long l, short i);
 }

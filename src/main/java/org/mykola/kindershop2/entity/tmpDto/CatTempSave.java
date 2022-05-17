@@ -10,21 +10,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="aa_cattmpsave")
+@Table(name = "aa_cattmpsave")
 @Data
 @EqualsAndHashCode(of = {"id", "name"})
-@ToString(of = {"id","name"})
+@ToString(of = {"id", "name", "parentId"})
 //@NoArgsConstructor
 //@AllArgsConstructor
 public class CatTempSave {
 	@Id
-	@Column(name ="cattemp_id")
+	@Column(name = "cattemp_id")
 	private Long id;
 	
-	@Column(name ="parent_id")
+	@Column(name = "parent_id")
 	private Long parentId;
 	
-	@Column(name ="name")
+	@Column(name = "name")
 	private String name;
 	
 	public CatTempSave() {

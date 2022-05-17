@@ -89,7 +89,7 @@ public class ManufacturerController {
 //	--------------------------------------------------------------TEST---------------
 	//2
 	@GetMapping("/test/cattemp/{id}")
-	public CatTemp manCategorySorted(@PathVariable(value ="id") Long id){
+	public List <CatTemp> manCategorySorted(@PathVariable(value ="id") Long id){
 		return manService.manCategorySorted(id);
 	}
 	

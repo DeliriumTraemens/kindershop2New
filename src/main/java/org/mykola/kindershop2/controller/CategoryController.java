@@ -28,8 +28,8 @@ public class CategoryController {
 	
 	@GetMapping
 	@JsonView(Views.IdName.class)
-//	public List<Category> getTopCatList()
 	public Category getTopCatList()
+//	public Category getTopCatList()
 	{
 		return catService.getTopCatList();
 	}

@@ -28,5 +28,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	
 	List<Category> findByNameLike(String name);
 	List<Category> findDistinctByNameContaining(String name);
-
+	
+	Optional<Category> findByName(String name);
 }

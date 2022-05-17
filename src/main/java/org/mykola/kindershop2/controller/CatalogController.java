@@ -28,8 +28,8 @@ public class CatalogController {
 //	}
 	
 	@GetMapping
-	public Optional<Catalog> getCatalog() {
-		return cataRepo.findById(1130L);
+	public Catalog getCatalog() {
+		return cataRepo.findById(30L).get();
 	}
 	
 	

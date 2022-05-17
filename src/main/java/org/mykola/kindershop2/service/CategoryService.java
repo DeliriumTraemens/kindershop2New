@@ -21,7 +21,8 @@ public class CategoryService {
 	}
 	
 	public Category getTopCatList() {
-		return catRepo.findCatalogList(0L);
+		return catRepo.findCatalogList(1144L);
+//		return catRepo.findById(0L).get();
 		
 	}
 	

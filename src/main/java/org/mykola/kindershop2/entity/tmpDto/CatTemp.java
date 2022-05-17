@@ -1,10 +1,7 @@
 package org.mykola.kindershop2.entity.tmpDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,30 +9,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "aa_cattmp")
+@Table(name = "aa_cattemp")
 @EqualsAndHashCode(of = {"id", "name"})
 @Data
 @NoArgsConstructor
-public class CatTemp implements Serializable {
+@AllArgsConstructor
+public class CatTemp{
 	
 	@Id
 	@Column(name = "cattemp_id")
 	private Long id;
-	
+
 //	@Column(name = "parent_id")
 //	private Long parentId;
 	
-	@Column(name ="name")
+	@Column(name = "name")
 	private String name;
 	
 	@ManyToOne()
-//	@JsonIgnore
-	@JoinColumn(name = "parent_id")
+	@JsonIgnore
+//	@JoinColumn(name = "parent_id")
 	private CatTemp parent;
 	
-	@OneToMany(	mappedBy="parent",cascade = CascadeType.ALL, orphanRemoval = true,
-			fetch = FetchType.EAGER)
-	@OrderBy("id ASC ")
+	@OneToMany(mappedBy = "parent")
+//	@OrderBy("id ASC ")
 	private Set<CatTemp> children = new HashSet<>();
 	
 	public CatTemp(Long id, String name) {
@@ -43,12 +40,12 @@ public class CatTemp implements Serializable {
 		this.name = name;
 	}
 	
-	@Override
-	public String toString() {
-		return "\nCatTemp{" +
-				       "id=" + id +
-				       ", name='" + name + '\'' +
-				       ", \n\tchildren=" + children +
-				       '}';
-	}
+//	@Override
+//	public String toString() {
+//		return "CatTemp{" +
+//				       "id=" + id +
+//				       ", name='" + name + '\'' +
+//				       ", children=" + children +
+//				       '}';
+//	}
 }

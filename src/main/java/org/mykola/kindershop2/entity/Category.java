@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
 //		property="id")
 @Table(name = "oc_category")
 @SecondaryTable(name = "oc_category_description",pkJoinColumns = @PrimaryKeyJoinColumn(name = "category_id"))
-public class Category {
+public class Category implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,14 +68,12 @@ public class Category {
 //	int column = 0;
 	
 	@ManyToOne()
-//	@JsonIgnore
+	@JsonIgnore
 	@JoinColumn(name =  "parent_id")
 	private Category parent;
 //
 	@OneToMany(mappedBy="parent",cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("id ASC ")
-	@JsonView(Views.IdName.class)
-//	@JsonIgnore
 	private Set<Category> children = new HashSet<>();
 	
 //	@ManyToMany(cascade = CascadeType.ALL)
