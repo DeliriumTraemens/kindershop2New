@@ -1,6 +1,5 @@
 package org.mykola.kindershop2.service;
 
-import org.mykola.kindershop2.dto.CatList;
 import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameEntity;
@@ -22,12 +21,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ManufacturerService {
@@ -118,8 +117,9 @@ public class ManufacturerService {
 	
 	//          ==================--------@ manCategorySorted @----------=========================
 	//<<<>>>\\
-//	public CatTemp manCategorySorted(Long id) {
-	public List<CatTemp> manCategorySorted(Long id) {
+	@Transactional
+	public Iterable<CatTemp> manCategorySorted(Long id) {
+//	public List<CatTemp> manCategorySorted(Long id) {
 		//a -- cleanUp table
 		catTempRepo.deleteAll();
 		catTempSaveRepo.deleteAll();
@@ -127,8 +127,11 @@ public class ManufacturerService {
 		//1 -- Declare and init working Collections
 //		List<CatTempSave> catTempStartSet= new ArrayList<>();
 		//1a setUp root Cats what's for?
-		CatTempSave rootCat = catTempSaveRepo.save(new CatTempSave(0L,null,"Root"));
-		CatTemp rootCatTemp = catTempRepo.save(new CatTemp(0L,"RootTemp"));
+		CatTempSave rootCat = catTempSaveRepo.save(new CatTempSave(30L,0L,"Root"));
+		CatTemp rootCatTemp = new CatTemp();
+				rootCatTemp.setId(30L);
+				rootCatTemp.setName("RootTemp");
+		catTempRepo.save(rootCatTemp);
 		
 		//2 - get requested Manufacturer
 		Manufacturer man = manRepo.findById(id).get();
@@ -145,30 +148,50 @@ public class ManufacturerService {
 		
 		List<CatTempSave> catTempStartSet = catTempSaveRepo.findAll();
 		
-		System.out.println("======= catTempStartSet =====");
-		System.out.println(catTempStartSet);
+//		System.out.println("======= catTempStartSet =====");
+//		System.out.println(catTempStartSet);
 		
 		int i=0;
 		for (CatTempSave catTempSave : catTempStartSet){
-			if(catTempSave.getId() != 0L) {
-//				System.out.println("========/////=========");
-//				System.out.println(catTempSave);
-				
-				CatTemp catTemp = new CatTemp(catTempSave.getId(), catTempSave.getName());
-				
+			if(catTempSave.getId() != 30L) {
+				System.out.println("catTempSave -=> " + catTempSave);
 				CatTempSave currentParent = catTempSaveRepo.findById(catTempSave.getParentId()).get();
-				CatTemp parent = new CatTemp(currentParent.getId(), currentParent.getName());
-//				catTempRepo.save(parent);
+
+//				new CatTemp(currentParent.getId(), currentParent.getName());
+				CatTemp parent = new CatTemp();
+						parent.setId(currentParent.getId());
+						parent.setName(currentParent.getName());
+						parent.setParId(currentParent.getParentId());
+				catTempRepo.save(parent);
+
 				
+				}
+		}//End for?
+		
+		for (CatTemp catTemp : catTempRepo.findAll()) {
+			if(catTemp.getParId()!=0L){
+				System.out.println("catTemp ==>> " + catTemp);
+				CatTemp parent = catTempRepo.findById(catTemp.getParId()).get();
+				System.out.println("parent -=> " + parent);
 				catTemp.setParent(parent);
 				catTempRepo.save(catTemp);
+				System.out.println("\tcatTemp+Parent +==>> " + catTemp);
 				
-				System.out.println("currentParent  -> " + currentParent);
-				System.out.println("parent -> " + parent);
-				}
-		}//end for?
+			}
+		}
+
+
+//		main Loop
+		
+
+
 			
 //		return catTempRepo.findById(0L).get();
+//		List<CatTemp> testCatTemp = catTempRepo.findRoot(1144L);
+		List<CatTemp> testCatTemp = (List<CatTemp>) catTempRepo.findAll();
+//		System.out.println("\n\n fromDB -->" + catTempRepo.findAll() + "\n");
+		System.out.println("\n\nfindRoot --> " + testCatTemp);
+//		return catTempRepo.findById(1144L).get();
 		return catTempRepo.findAll();
 	}
 		

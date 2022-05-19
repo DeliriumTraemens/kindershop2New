@@ -20,11 +20,11 @@ public class CatTempSaveRepoTest {
 	
 	@Test
 	public void saveNew(){
-		CatTemp newOne=new CatTemp(4L,"Fourth");
-		CatTemp root= ctr.findById(0L).get();
-		newOne.setParent(root);
-		ctr.save(newOne);
-		System.out.println(newOne);
+//		CatTemp newOne=new CatTemp(4L,"Fourth");
+//		CatTemp root= ctr.findById(0L).get();
+//		newOne.setParent(root);
+//		ctr.save(newOne);
+//		System.out.println(newOne);
 	}
 	
 	@Test
