@@ -48,3 +48,94 @@ public class CatTemp{
 				       '}';
 	}
 }
+
+==========GENERATED TABLE (converted to JSON)======
+[
+  {
+    "id": 30,
+    "name": "Root",
+    "parent_id": null,
+    "par_id": 0
+  },
+  {
+    "id": 1143,
+    "name": "Развивающие игры",
+    "parent_id": 1144,
+    "par_id": 1144
+  },
+  {
+    "id": 1144,
+    "name": "РАЗВИТИЕ И ТВОРЧЕСТВО",
+    "parent_id": 30,
+    "par_id": 30
+  },
+  {
+    "id": 1565,
+    "name": "Конструкторы",
+    "parent_id": 1143,
+    "par_id": 1143
+  },
+  {
+    "id": 1944,
+    "name": "Магнитные конструкторы",
+    "parent_id": 1565,
+    "par_id": 1565
+  }
+]
+
+=========------- FRAGMENT .toString()---=========
+CatTemp{id=1944, parId=1565, name='Магнитные конструкторы', children=[]}
+
+==========-------- FROM POSTMAN (с игнором parent) ( repo.findAll() ) -=============
+
+[
+    {
+        "id": 30,
+        "parId": 0,
+        "name": "Root",
+        "children": []
+    },
+    {
+        "id": 1143,
+        "parId": 1144,
+        "name": "Развивающие игры",
+        "children": []
+    },
+    {
+        "id": 1144,
+        "parId": 30,
+        "name": "РАЗВИТИЕ И ТВОРЧЕСТВО",
+        "children": []
+    }
+]
+
+========------POSTMAN 2-----=======
+ C отключенным  @JsonIgnore у 	"private CatTemp parent";
+
+ [
+ {
+        "id": 1565,
+        "parId": 1143,
+        "name": "Конструкторы",
+        "parent": {
+            "id": 1143,
+            "parId": 1144,
+            "name": "Развивающие игры",
+            "parent": {
+                "id": 1144,
+                "parId": 30,
+                "name": "РАЗВИТИЕ И ТВОРЧЕСТВО",
+                "parent": {
+                    "id": 30,
+                    "parId": 0,
+                    "name": "Root",
+                    "parent": null,
+                    "children": []
+                },
+                "children": []
+            },
+            "children": []
+        },
+        "children": []
+    }
+]

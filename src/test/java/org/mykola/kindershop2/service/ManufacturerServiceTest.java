@@ -3,7 +3,9 @@ package org.mykola.kindershop2.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mykola.kindershop2.entity.*;
+import org.mykola.kindershop2.entity.tmpDto.CatTemp;
 import org.mykola.kindershop2.repository.*;
+import org.mykola.kindershop2.repository.temp.CatTempRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,6 +27,8 @@ public class ManufacturerServiceTest {
 	CatCategoryRepository catCatRepo;
 	@Autowired
 	CategoryRepository catRepo;
+	@Autowired
+	CatTempRepo catTempRepo;
 
 	
 //	@Test
@@ -244,4 +248,45 @@ public class ManufacturerServiceTest {
 		System.out.println("Found " + total.size());
 	}
 	
+	@Test
+	public void manCategorySorted() {
+		CatTemp main = new CatTemp();
+			main.setId(40L);
+			main.setName("Root");
+			catTempRepo.save(main);
+		
+		
+		CatTemp child1 = new CatTemp();
+			child1.setId(1100L);
+			child1.setName("Child 1");
+			child1.setParent(main);
+			catTempRepo.save(child1);
+			
+//			main.addChild(child1);
+//			catTempRepo.save(main);
+
+
+//		CatTemp child2 = new CatTemp();
+//			child1.setId(1200L);
+//			child1.setName("Child 2");
+//			catTempRepo.save(child2);
+//
+//		CatTemp child3 = new CatTemp();
+//			child1.setId(1300L);
+//			child1.setName("Child 3");
+//			catTempRepo.save(child3);
+//
+//		List<CatTemp> childList=new ArrayList<CatTemp>();
+//			childList.add (child1);
+//			childList.add (child2);
+//			childList.add (child3);
+		
+//		System.out.println(childList);
+//		System.out.println("=========---------=============");
+//		main.setChildrenlist(childList);
+//		catTempRepo.save(main);
+		
+		System.out.println("main -> "+main);
+		System.out.println("find All "+catTempRepo.findAll());
 	}
+}

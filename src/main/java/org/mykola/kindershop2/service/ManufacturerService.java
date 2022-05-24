@@ -33,26 +33,43 @@ public class ManufacturerService {
 	@Value("${upload.path}")
 	private String uploadPath;
 	
-	private final ManufacturerRepository manRepo;
-	private final ManIdNameEntityRepo manIdNameDtoRepo;
-	private final CatCategoryRepository catCatRepo;
-	private final CatTempRepo catTempRepo;
-	private final CatTempSaveRepo catTempSaveRepo;
-	private final ProdCatRepository prodCatRepo;
-	
+//	private final ManufacturerRepository manRepo;
 	@Autowired
-	public ManufacturerService(
-			ManufacturerRepository manRepo, ManIdNameEntityRepo manIdNameDtoRepo, CatCategoryRepository catCatRepo, CatTempRepo catTempRepo,
-			CatTempSaveRepo catTempSaveRepo, ProdCatRepository prodCatRepo
-	                          ) {
-		this.manRepo = manRepo;
-		this.manIdNameDtoRepo = manIdNameDtoRepo;
-		
-		this.catCatRepo = catCatRepo;
-		this.catTempRepo = catTempRepo;
-		this.catTempSaveRepo = catTempSaveRepo;
-		this.prodCatRepo = prodCatRepo;
-	}
+	ManufacturerRepository manRepo;
+//	private final ManIdNameEntityRepo manIdNameDtoRepo;
+	@Autowired
+	ManIdNameEntityRepo manIdNameDtoRepo;
+//	private final CatCategoryRepository catCatRepo;
+	@Autowired
+	CatCategoryRepository catCatRepo;
+//	private final CatTempRepo catTempRepo;
+	@Autowired
+	CatTempRepo catTempRepo;
+//	private final CatTempSaveRepo catTempSaveRepo;
+	@Autowired
+	CatTempSaveRepo catTempSaveRepo;
+//	private final ProdCatRepository prodCatRepo;
+	@Autowired
+	ProdCatRepository prodCatRepo;
+	@Autowired
+	CatTempService cts;
+	
+//	@Autowired
+//	public ManufacturerService(
+//			ManufacturerRepository manRepo,
+//			ManIdNameEntityRepo manIdNameDtoRepo,
+//			CatCategoryRepository catCatRepo,
+////			CatTempRepo catTempRepo,
+//			CatTempSaveRepo catTempSaveRepo,
+//			ProdCatRepository prodCatRepo) {
+//		this.manRepo = manRepo;
+//		this.manIdNameDtoRepo = manIdNameDtoRepo;
+//
+//		this.catCatRepo = catCatRepo;
+////		this.catTempRepo = catTempRepo;
+//		this.catTempSaveRepo = catTempSaveRepo;
+//		this.prodCatRepo = prodCatRepo;
+//	}
 	
 	public List<Manufacturer> findAll() {
 		return manRepo.findAll();
@@ -117,7 +134,7 @@ public class ManufacturerService {
 	
 	//          ==================--------@ manCategorySorted @----------=========================
 	//<<<>>>\\
-	@Transactional
+//	@Transactional
 	public Iterable<CatTemp> manCategorySorted(Long id) {
 //	public List<CatTemp> manCategorySorted(Long id) {
 		//a -- cleanUp table
@@ -140,7 +157,9 @@ public class ManufacturerService {
 		for (ProdCat prodCat : man.getProdCatList()) {
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
 				//May be add CatTempSave = просто класс с парентАйди, и по нему уже мапить энтить? -YYYEEEEE
-				catTempSaveRepo.save(new CatTempSave(catCategory.getId(), catCategory.getParentId(), catCategory.getName()));
+				catTempSaveRepo.save(new CatTempSave(catCategory.getId(),
+				                                     catCategory.getParentId(),
+				                                     catCategory.getName()));
 				
 			}
 		} //InitialList of total categories List end
@@ -183,16 +202,9 @@ public class ManufacturerService {
 
 //		main Loop
 		
-
-
-			
-//		return catTempRepo.findById(0L).get();
-//		List<CatTemp> testCatTemp = catTempRepo.findRoot(1144L);
 		List<CatTemp> testCatTemp = (List<CatTemp>) catTempRepo.findAll();
-//		System.out.println("\n\n fromDB -->" + catTempRepo.findAll() + "\n");
-		System.out.println("\n\nfindRoot --> " + testCatTemp);
-//		return catTempRepo.findById(1144L).get();
-		return catTempRepo.findAll();
+		System.out.println("\n\n fromDB -->" + catTempRepo.findAll() + "\n");
+		return cts.findNumber();
 	}
 		
 	
