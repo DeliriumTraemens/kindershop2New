@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "aa_catsproduct")
-public class CatOfProductWrite {
+public class CatOfProduct {
 	@Id 
 	@Column(name ="id")
 	private Long id;
@@ -22,24 +22,24 @@ public class CatOfProductWrite {
 	@ManyToOne()
 	@JsonIgnore
 	@JoinColumn(name = "parent_id")
-	private CatOfProductWrite parent;
+	private CatOfProduct parent;
 	
 	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER )
-	private List <CatOfProductWrite> children = new ArrayList<>();
+	private List <CatOfProduct> children = new ArrayList<>();
 	
 	//Constructors
 	
 	
-	public CatOfProductWrite() {
+	public CatOfProduct() {
 	}
 	
-	public CatOfProductWrite(Long id, Long parId, String name) {
+	public CatOfProduct(Long id, Long parId, String name) {
 		this.id = id;
 		this.parId = parId;
 		this.name = name;
 	}
 	
-	public CatOfProductWrite(Long id, CatOfProductWrite parent) {
+	public CatOfProduct(Long id, CatOfProduct parent) {
 		this.id = id;
 		this.parent = parent;
 	}
@@ -71,19 +71,19 @@ public class CatOfProductWrite {
 		this.name = name;
 	}
 	
-	public CatOfProductWrite getParent() {
+	public CatOfProduct getParent() {
 		return parent;
 	}
 	
-	public void setParent(CatOfProductWrite parent) {
+	public void setParent(CatOfProduct parent) {
 		this.parent = parent;
 	}
 	
-	public List<CatOfProductWrite> getChildren() {
+	public List<CatOfProduct> getChildren() {
 		return children;
 	}
 	
-	public void setChildren(List<CatOfProductWrite> children) {
+	public void setChildren(List<CatOfProduct> children) {
 		this.children = children;
 	}
 	
@@ -98,7 +98,7 @@ public class CatOfProductWrite {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		CatOfProductWrite that = (CatOfProductWrite) o;
+		CatOfProduct that = (CatOfProduct) o;
 		return getId().equals(that.getId()) &&
 				       Objects.equals(getParId(), that.getParId()) &&
 				       getName().equals(that.getName());
