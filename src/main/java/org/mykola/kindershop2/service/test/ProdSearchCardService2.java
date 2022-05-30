@@ -1,5 +1,6 @@
 package org.mykola.kindershop2.service.test;
 
+import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardNewDto;
 import org.mykola.kindershop2.entity.tmpDto.CatIdNameDto2;
 import org.mykola.kindershop2.entity.tmpDto.CatRanged;
 import org.mykola.kindershop2.entity.tmpDto.ProductSearchCard;
@@ -17,7 +18,7 @@ public class ProdSearchCardService2 {
 	ProdSearchCardRepo pscr;
 	
 	
-	public List<CatIdNameDto2> testCard(Long id) {
+	public ProductSearchCardNewDto testCard(Long id) {
 		ProductSearchCard product= pscr.findById(id).get();
 		/*id
 		* name
@@ -38,9 +39,12 @@ public class ProdSearchCardService2 {
 		CatRanged rootCR = getCatRanRoot(product);
 		
 		CatIdNameDto2 rootDto = getRootDto2(rootCR);
+		unSortedCats.add(rootDto);
 		
 		for (CatRanged cat : productCategories) {
-			unSortedCats.add(new CatIdNameDto2( cat.getId(), cat.getParent().getId(), cat.getName() ) );
+			if (cat.getParent().getId()!=30L){
+				unSortedCats.add(new CatIdNameDto2( cat.getId(), cat.getParent().getId(), cat.getName() ) );
+			}
 		}
 		
 		sortedCats.add(getRootDto2(rootCR));
@@ -55,20 +59,17 @@ public class ProdSearchCardService2 {
 			if(!collect.isEmpty() ){
 				sortedCats.add(collect.get(0));
 			}
-//			System.out.println("collect ==>"+collect);
-//			sortedCats.add(  catIdNameDto2);
 		}
 		
 		
-//		System.out.println("rootDto ->>"+rootDto);
 		System.out.println("UnSorted "+unSortedCats);
 		System.out.println("Sorted ->->" + sortedCats);
 		
-		/*Search By Parent*/
+		/*Id name image manufacturer*/
+		ProductSearchCardNewDto prodDto=new ProductSearchCardNewDto(product.getId(), product.getName(),product.getImage(),product.getManufacturer());
+		prodDto.setCategories(sortedCats);
 		
-		
-		
-		return sortedCats;
+		return prodDto;
 	}
 	
 	private CatIdNameDto2 getRootDto2(CatRanged rootCR) {

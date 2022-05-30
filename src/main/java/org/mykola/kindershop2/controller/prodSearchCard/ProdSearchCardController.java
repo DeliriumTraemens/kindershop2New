@@ -1,6 +1,7 @@
 package org.mykola.kindershop2.controller.prodSearchCard;
 
 import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardDto;
+import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardNewDto;
 import org.mykola.kindershop2.entity.tmpDto.CatIdNameDto2;
 import org.mykola.kindershop2.entity.tmpDto.ProductSearchCard;
 import org.mykola.kindershop2.repository.searchCard.ProdSearchCardRepo;
@@ -38,8 +39,8 @@ public class ProdSearchCardController {
 	}
 	
 	@GetMapping("/test2/{id}")
-	public List<CatIdNameDto2> testCard2(@PathVariable("id")Long id){
-//	public CatIdNameDto2 testCard2(@PathVariable("id")Long id){
+//	public List<CatIdNameDto2> testCard2(@PathVariable("id")Long id){
+	public ProductSearchCardNewDto testCard2(@PathVariable("id")Long id){
 		return ps2.testCard(id);
 	}
 	
