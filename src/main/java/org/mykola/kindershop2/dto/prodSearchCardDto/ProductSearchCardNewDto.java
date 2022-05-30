@@ -14,7 +14,7 @@ public class ProductSearchCardNewDto {
 	
 	private ManIdNameEntity manufacturer;
 	
-	private List<CatIdNameDto2> categories;
+	private List<CatIdNameDto2> categoryList;
 	
 	//Cons
 	
@@ -62,12 +62,12 @@ public class ProductSearchCardNewDto {
 		this.manufacturer = manufacturer;
 	}
 	
-	public List<CatIdNameDto2> getCategories() {
-		return categories;
+	public List<CatIdNameDto2> getCategoryList() {
+		return categoryList;
 	}
 	
-	public void setCategories(List<CatIdNameDto2> categories) {
-		this.categories = categories;
+	public void setCategoryList(List<CatIdNameDto2> categoryList) {
+		this.categoryList = categoryList;
 	}
 	
 	//EqHc
@@ -99,7 +99,7 @@ public class ProductSearchCardNewDto {
 				       ", name='" + name + '\'' +
 				       ", image='" + image + '\'' +
 				       ", manufacturer=" + manufacturer +
-				       ", categories=" + categories +
+				       ", categories=" + categoryList +
 				       '}';
 	}
 }

@@ -1,12 +1,14 @@
 package org.mykola.kindershop2.service;
 
 import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
+import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardNewDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameEntity;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNamePick;
 import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
+import org.mykola.kindershop2.entity.tmpDto.CatIdNameDto2;
 import org.mykola.kindershop2.entity.tmpDto.CatTemp;
 import org.mykola.kindershop2.entity.tmpDto.CatTempSave;
 import org.mykola.kindershop2.repository.CatCategoryRepository;
@@ -129,8 +131,49 @@ public class ManufacturerService {
 		ManIdNameEntity manufacturer = manIdNameDtoRepo.findById(manId).get();
 //		Set<ProdCat>prodsCatsList= prodCatRepo.findByCatIdAndManufacturer(catId, manufacturer);
 		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer, catId);
+		List<CatIdNameDto2>catIdND2List = new ArrayList<>();
+		List<ProductSearchCardNewDto> prSCNDto = new ArrayList<>();
+		List<ProductSearchCardNewDto> prSCNDtoSorted = new ArrayList<>();
+		
+		for (ProdCat prodCat : prodsCatsList) {
+			for (CatCategory catCategory : prodCat.getCategoryList()) {
+				catIdND2List.add(new CatIdNameDto2(catCategory.getId(),catCategory.getParentId(),catCategory.getName()));
+			}
+			
+			//Сюда пихуем обработчик листа категорийДто
+			prSCNDtoSorted=catIdND2Sorter(catIdND2List);
+			//
+			
+			ProductSearchCardNewDto prSCDto = new ProductSearchCardNewDto(prodCat.getId(), prodCat.getName(),prodCat.getImage(),prodCat.getManufacturer());
+									prSCDto.setCategoryList(catIdND2List);
+		}
+		
+		
 		return prodsCatsList;
 	}
+	
+	//Сортер категорий
+	private List<ProductSearchCardNewDto> catIdND2Sorter(List<CatIdNameDto2> catIdND2List) {
+		//Make Root
+		//Add root to empty unsorted List
+		//Add the rest cats to unsorted List except root
+		//Iterate unsorted List
+		//  and find child to current
+		return null;
+	}
+	
+	/*BlahBlah
+	* берем Root
+	* если для него в unsorted есть чилдрен, то пихаем Чилдрен в финалЛист и
+	* Чилдрен чтановится Рутом
+	*   findChild(node){
+	*   if(node.hasChild){
+	*       sortedList.add(child)
+	*       findChild( sortedList.getLast) //sortedList.get(sortedList.size()-1)
+	*       } else break
+	*   }
+	*
+	* */
 	
 	//          ==================--------@ manCategorySorted @----------=========================
 	//<<<>>>\\

@@ -17,7 +17,7 @@ public class ProdSearchCardService2 {
 	@Autowired
 	ProdSearchCardRepo pscr;
 	
-	
+	//Main Method
 	public ProductSearchCardNewDto testCard(Long id) {
 		ProductSearchCard product= pscr.findById(id).get();
 		/*id
@@ -67,10 +67,10 @@ public class ProdSearchCardService2 {
 		
 		/*Id name image manufacturer*/
 		ProductSearchCardNewDto prodDto=new ProductSearchCardNewDto(product.getId(), product.getName(),product.getImage(),product.getManufacturer());
-		prodDto.setCategories(sortedCats);
+		prodDto.setCategoryList(sortedCats);
 		
 		return prodDto;
-	}
+	} //Main Method End
 	
 	private CatIdNameDto2 getRootDto2(CatRanged rootCR) {
 		return new CatIdNameDto2(rootCR.getId(),

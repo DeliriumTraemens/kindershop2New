@@ -60,6 +60,7 @@ public class ManufacturerController {
 		return manRepo.findById(id).get();
 	}
 	
+	//For ProductSearchCard List
 	@GetMapping("/catprod")
 	public List<ProdCat> manufacturCategoryProd(
 			@RequestParam(value="catId")Long catId,
