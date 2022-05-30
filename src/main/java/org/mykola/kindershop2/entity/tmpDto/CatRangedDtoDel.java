@@ -5,14 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
 @EqualsAndHashCode(of = {"id", "name"})
 @Table(name = "aa_catrange")
-public class CatRangedDto {
+public class CatRangedDtoDel {
 	@Id
 	@Column(name = "id")
 	private Long id;
@@ -25,10 +23,7 @@ public class CatRangedDto {
 //	@JsonIgnore
 	@JsonBackReference
 	@JoinColumn(name = "parent_id")
-	private CatRangedDto parent;
-	
-	@OneToMany(mappedBy = "parent", fetch=FetchType.EAGER)
-	private List<CatRangedDto> children = new ArrayList<>();
+	private CatRangedDtoDel parent;
 	
 	@Override
 	public String toString() {
@@ -36,7 +31,6 @@ public class CatRangedDto {
 				       "id=" + id +
 				       ", name='" + name + '\'' +
 				       ", parId=" + parId +
-				       ", children=" + children +
 				       '}';
 	}
 }

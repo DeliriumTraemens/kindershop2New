@@ -21,7 +21,7 @@ public class CategoryService {
 	}
 	
 	public Category getTopCatList() {
-		return catRepo.findCatalogList(1144L);
+		return catRepo.findCatalogList(30L);
 //		return catRepo.findById(0L).get();
 		
 	}
@@ -31,8 +31,9 @@ public class CategoryService {
 		Category edited = catRepo.findById(id).get();
 		
 		edited.setParent(parent);
-		
-		catRepo.save(edited);
+		if(!id.equals(parentId)){
+			catRepo.save(edited);
+		}
 	}
 	
 	public void addNewSubcat(Long parentId, String name, String description) {

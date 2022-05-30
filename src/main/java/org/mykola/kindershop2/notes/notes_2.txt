@@ -1,52 +1,57 @@
+Всем доброго дня!
+Непонятка с работой JPA (SpringBoot + JPA + MySql + Rest)
+
+Есть сущность условного типа "каталог (под-)категорий"--
+ с @ManyToOne  и @OneToMany полями -- стандартная схема - сущность с собственой дочкой.
+
+Условная схема алгоритма:
+1) Очистить таблицу
+2) Создать корневой объект
+3) Добавить дочерние объекты
+4) Получить корневой объект (с чилдренЛистом)
+
+ Вроде бы все работает - то есть извлекается сущность с вложенными чилдренЛистами..
+ Но трабл в том, что таблицу нужно очищать Перед помещением в нее очередной порции данных для обработки.
+ И вот тут возникает основной головняк:
+ таблица в базе очищается, данные записываются, извекаются,
+ НО НЕ отрабатывается запрос по чилдренЛисту -
+  объекты из базы выходят поштучно (видно по логу запроса).
+ Причем если отключить очистку таблицы (или нативным трункейтом или deleteAll),
+ и Делать серию запросов на ендпойнт, то все работает как надо -
+ выходит объект с многоуровневым чилдренЛистом.
+
+Что это может быть, куда можно сунуть дебаггер, и как это лечить?
+
+
+
+
+
 ==============----- ENTITY -----=================
 package ****----*****;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "aa_cattemp")
 @Data
 @EqualsAndHashCode(of = {"id", "name"})
-@NoArgsConstructor
-
-public class CatTemp{
-
+@Table(name = "aa_catrange")
+public class CatRangedDto {
 	@Id
-//	@GeneratedValue
+	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "par_id")
-	private Long parId;
-
-	@Column(name = "name")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnore
+	private Long parId;
+
+	@ManyToOne()
+//	@JsonIgnore
+	@JsonBackReference
 	@JoinColumn(name = "parent_id")
-	private CatTemp parent;
+	private CatRangedDto parent;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
-	@OrderBy("id ASC ")
-	private List<CatTemp> children = new ArrayList<>();
-
-
-	@Override
-	public String toString() {
-		return "CatTemp{" +
-				       "id=" + id +
-				       ", parId=" + parId +
-				       ", name='" + name + '\'' +
-				       ", children=" + children +
-				       '}';
-	}
+	@OneToMany(mappedBy = "parent")
+	private List<CatRangedDto> children = new ArrayList<>();
 }
 
 ==========GENERATED TABLE (converted to JSON)======

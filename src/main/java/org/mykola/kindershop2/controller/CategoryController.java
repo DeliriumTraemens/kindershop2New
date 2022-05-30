@@ -36,8 +36,9 @@ public class CategoryController {
 	
 	@PostMapping("/editierarchy")
 	public Category editIerarchy(@RequestParam("id")Long id, @RequestParam("parentId")Long parentId){
-		
-		catService.editIerarchy(id, parentId);
+		if (!id.equals(parentId)){
+			catService.editIerarchy(id, parentId);
+		}
 		
 		return catService.getTopCatList();
 	}

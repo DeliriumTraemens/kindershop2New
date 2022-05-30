@@ -25,6 +25,8 @@ public class CatRanged {
 	@JoinColumn(name = "category_id")
 	private String name;
 	
+	
+	
 	@ManyToOne()
 //	@JsonIgnore
 	@JsonBackReference
