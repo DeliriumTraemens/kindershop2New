@@ -23,12 +23,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ManufacturerService {
@@ -127,25 +127,31 @@ public class ManufacturerService {
 		return manRepo.getAllProjected();
 	}
 	
+	//For ProductSearchCard List @GetMapping("/catprod")
 	public List<ProdCat> getCatProductsList(Long catId, Long manId) {
 		ManIdNameEntity manufacturer = manIdNameDtoRepo.findById(manId).get();
-//		Set<ProdCat>prodsCatsList= prodCatRepo.findByCatIdAndManufacturer(catId, manufacturer);
 		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer, catId);
 		List<CatIdNameDto2>catIdND2List = new ArrayList<>();
+		List<CatIdNameDto2>catIdND2SortedList = new ArrayList<>();
 		List<ProductSearchCardNewDto> prSCNDto = new ArrayList<>();
 		List<ProductSearchCardNewDto> prSCNDtoSorted = new ArrayList<>();
 		
+		//todo catIdND2List отследить почему не самоочищается!
 		for (ProdCat prodCat : prodsCatsList) {
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
 				catIdND2List.add(new CatIdNameDto2(catCategory.getId(),catCategory.getParentId(),catCategory.getName()));
 			}
 			
 			//Сюда пихуем обработчик листа категорийДто
-			prSCNDtoSorted=catIdND2Sorter(catIdND2List);
-			//
+			catIdND2SortedList=catIdND2Sorter(catIdND2List);
+			System.out.println("SORTED catIdND2SortedList ->"+catIdND2SortedList);
 			
+			
+			// Итоговая карточка товара для вывода
 			ProductSearchCardNewDto prSCDto = new ProductSearchCardNewDto(prodCat.getId(), prodCat.getName(),prodCat.getImage(),prodCat.getManufacturer());
 									prSCDto.setCategoryList(catIdND2List);
+									
+			//Однако еще нужно добавить карточку в лист
 		}
 		
 		
@@ -153,14 +159,48 @@ public class ManufacturerService {
 	}
 	
 	//Сортер категорий
-	private List<ProductSearchCardNewDto> catIdND2Sorter(List<CatIdNameDto2> catIdND2List) {
+	private List<CatIdNameDto2> catIdND2Sorter(List<CatIdNameDto2> catIdND2List) {
+		
+		//вывести в тушку класса
+		List<CatIdNameDto2> sorted = new ArrayList<>();
+		System.out.println("initial sorted ->"+sorted);
+		
+		List<CatIdNameDto2> noRootList=new ArrayList<>();
+		
 		//Make Root
-		//Add root to empty unsorted List
-		//Add the rest cats to unsorted List except root
-		//Iterate unsorted List
-		//  and find child to current
-		return null;
+		CatIdNameDto2 rootCat = catIdND2List.stream().filter(c -> c.getParId().equals(30L)).findFirst().get();
+		//Add Root to Empty sorted List
+		sorted.add(rootCat);
+		System.out.println("sorted with root ->"+sorted);
+		
+		//Collect cats excepting Root
+		System.out.println("catIdND2List ->" + catIdND2List);
+		noRootList.addAll(0, catIdND2List.stream().filter(c -> c.getParId() != 30L).collect(Collectors.toList()));
+//		noRootList = catIdND2List.stream().filter(c -> c.getParId() != 30L).collect(Collectors.toList());
+		
+		System.out.println("noROOT->>"+ noRootList);
+		
+		
+		for (int i = 0; i<noRootList.size(); i++) {
+			CatIdNameDto2 curParent=sorted.get(sorted.size()-1);
+			Optional<CatIdNameDto2> curChild = catIdND2List.stream().filter(c->c.getParId().equals(curParent.getId())).findFirst();
+			if (curChild.isPresent()){
+				sorted.add(curChild.get());
+				System.out.println("--------sorted added child" + sorted);
+			}
+		}
+		noRootList.clear();
+		
+		return sorted;
 	}
+	
+	private Optional<CatIdNameDto2> hasAChild(CatIdNameDto2 currCat, List<CatIdNameDto2> catIdND2List) {
+			
+			return catIdND2List.stream().filter(c -> c.getParId().equals(currCat.getId())).findFirst();
+	}
+	
+//		return rootCat;
+	
 	
 	/*BlahBlah
 	* берем Root
