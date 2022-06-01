@@ -2,6 +2,7 @@ package org.mykola.kindershop2.controller;
 
 import org.mykola.kindershop2.dto.CatList;
 import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
+import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardNewDto;
 import org.mykola.kindershop2.dto.projections.CatIdNameDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.entity.CatCategory;
@@ -62,7 +63,8 @@ public class ManufacturerController {
 	
 	//For ProductSearchCard List @GetMapping("/catprod")
 	@GetMapping("/catprod")
-	public List<ProdCat> manufacturCategoryProd(
+//	public List<ProdCat> manufacturCategoryProd(
+	public List<ProductSearchCardNewDto> manufacturCategoryProd(
 			@RequestParam(value="catId")Long catId,
 			@RequestParam(value="manId")Long manId){
 		

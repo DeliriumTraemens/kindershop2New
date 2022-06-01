@@ -128,34 +128,41 @@ public class ManufacturerService {
 	}
 	
 	//For ProductSearchCard List @GetMapping("/catprod")
-	public List<ProdCat> getCatProductsList(Long catId, Long manId) {
+	public List<ProductSearchCardNewDto> getCatProductsList(Long catId, Long manId) {
 		ManIdNameEntity manufacturer = manIdNameDtoRepo.findById(manId).get();
 		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer, catId);
 		List<CatIdNameDto2>catIdND2List = new ArrayList<>();
 		List<CatIdNameDto2>catIdND2SortedList = new ArrayList<>();
 		List<ProductSearchCardNewDto> prSCNDto = new ArrayList<>();
-		List<ProductSearchCardNewDto> prSCNDtoSorted = new ArrayList<>();
+		List<ProductSearchCardNewDto> resultList = new ArrayList<>();
 		
-		//todo catIdND2List отследить почему не самоочищается!
+		//todo catIdND2List отследить почему не самоочищается! -Done!
+//		int number =1;
 		for (ProdCat prodCat : prodsCatsList) {
+			if(!catIdND2List.isEmpty()){
+				catIdND2List.clear();
+			}
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
 				catIdND2List.add(new CatIdNameDto2(catCategory.getId(),catCategory.getParentId(),catCategory.getName()));
 			}
 			
 			//Сюда пихуем обработчик листа категорийДто
+			
 			catIdND2SortedList=catIdND2Sorter(catIdND2List);
-			System.out.println("SORTED catIdND2SortedList ->"+catIdND2SortedList);
+//			System.out.println("SORTED catIdND2SortedList ->"+catIdND2SortedList);
 			
 			
 			// Итоговая карточка товара для вывода
 			ProductSearchCardNewDto prSCDto = new ProductSearchCardNewDto(prodCat.getId(), prodCat.getName(),prodCat.getImage(),prodCat.getManufacturer());
-									prSCDto.setCategoryList(catIdND2List);
-									
-			//Однако еще нужно добавить карточку в лист
+									prSCDto.setCategoryList(catIdND2SortedList);
+			
+			//Однако еще нужно добавить карточку в лист -DONE
+			resultList.add(prSCDto);
 		}
 		
 		
-		return prodsCatsList;
+//		return prodsCatsList;
+		return resultList;
 	}
 	
 	//Сортер категорий
@@ -163,7 +170,6 @@ public class ManufacturerService {
 		
 		//вывести в тушку класса
 		List<CatIdNameDto2> sorted = new ArrayList<>();
-		System.out.println("initial sorted ->"+sorted);
 		
 		List<CatIdNameDto2> noRootList=new ArrayList<>();
 		
@@ -171,22 +177,16 @@ public class ManufacturerService {
 		CatIdNameDto2 rootCat = catIdND2List.stream().filter(c -> c.getParId().equals(30L)).findFirst().get();
 		//Add Root to Empty sorted List
 		sorted.add(rootCat);
-		System.out.println("sorted with root ->"+sorted);
 		
 		//Collect cats excepting Root
-		System.out.println("catIdND2List ->" + catIdND2List);
 		noRootList.addAll(0, catIdND2List.stream().filter(c -> c.getParId() != 30L).collect(Collectors.toList()));
-//		noRootList = catIdND2List.stream().filter(c -> c.getParId() != 30L).collect(Collectors.toList());
 		
-		System.out.println("noROOT->>"+ noRootList);
-		
-		
+		//The Main Routine
 		for (int i = 0; i<noRootList.size(); i++) {
 			CatIdNameDto2 curParent=sorted.get(sorted.size()-1);
 			Optional<CatIdNameDto2> curChild = catIdND2List.stream().filter(c->c.getParId().equals(curParent.getId())).findFirst();
 			if (curChild.isPresent()){
 				sorted.add(curChild.get());
-				System.out.println("--------sorted added child" + sorted);
 			}
 		}
 		noRootList.clear();
@@ -194,26 +194,9 @@ public class ManufacturerService {
 		return sorted;
 	}
 	
-	private Optional<CatIdNameDto2> hasAChild(CatIdNameDto2 currCat, List<CatIdNameDto2> catIdND2List) {
-			
-			return catIdND2List.stream().filter(c -> c.getParId().equals(currCat.getId())).findFirst();
-	}
-	
-//		return rootCat;
 	
 	
-	/*BlahBlah
-	* берем Root
-	* если для него в unsorted есть чилдрен, то пихаем Чилдрен в финалЛист и
-	* Чилдрен чтановится Рутом
-	*   findChild(node){
-	*   if(node.hasChild){
-	*       sortedList.add(child)
-	*       findChild( sortedList.getLast) //sortedList.get(sortedList.size()-1)
-	*       } else break
-	*   }
-	*
-	* */
+	
 	
 	//          ==================--------@ manCategorySorted @----------=========================
 	//<<<>>>\\
