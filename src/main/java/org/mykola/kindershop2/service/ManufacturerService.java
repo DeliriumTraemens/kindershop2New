@@ -154,7 +154,9 @@ public class ManufacturerService {
 			
 			// Итоговая карточка товара для вывода
 			ProductSearchCardNewDto prSCDto = new ProductSearchCardNewDto(prodCat.getId(), prodCat.getName(),prodCat.getImage(),prodCat.getManufacturer());
-									prSCDto.setCategoryList(catIdND2SortedList);
+									//TODO replace plain argument with a method -- catIdND2Sorter(catIdND2List)
+//									prSCDto.setCategoryList(catIdND2SortedList);
+									prSCDto.setCategoryList( catIdND2Sorter(catIdND2List) );
 			
 			//Однако еще нужно добавить карточку в лист -DONE
 			resultList.add(prSCDto);
@@ -255,12 +257,12 @@ public class ManufacturerService {
 		
 		for (CatTemp catTemp : catTempRepo.findAll()) {
 			if(catTemp.getParId()!=0L){
-				System.out.println("catTemp ==>> " + catTemp);
+//				System.out.println("catTemp ==>> " + catTemp);
 				CatTemp parent = catTempRepo.findById(catTemp.getParId()).get();
-				System.out.println("parent -=> " + parent);
+//				System.out.println("parent -=> " + parent);
 				catTemp.setParent(parent);
 				catTempRepo.save(catTemp);
-				System.out.println("\tcatTemp+Parent +==>> " + catTemp);
+//				System.out.println("\tcatTemp+Parent +==>> " + catTemp);
 				
 			}
 		}
@@ -269,7 +271,7 @@ public class ManufacturerService {
 //		main Loop
 		
 		List<CatTemp> testCatTemp = (List<CatTemp>) catTempRepo.findAll();
-		System.out.println("\n\n fromDB -->" + catTempRepo.findAll() + "\n");
+//		System.out.println("\n\n fromDB -->" + catTempRepo.findAll() + "\n");
 		return cts.findNumber();
 	}
 		
