@@ -12,6 +12,10 @@ public class ProductSearchCardNewDto {
 	private String name;
 	private String image;
 	
+	
+	
+	private Long catId;
+	
 	private ManIdNameEntity manufacturer;
 	
 	private List<CatIdNameDto2> categoryList;
@@ -22,7 +26,7 @@ public class ProductSearchCardNewDto {
 	public ProductSearchCardNewDto() {
 	}
 	
-	public ProductSearchCardNewDto(Long id, String name, String image, ManIdNameEntity manufacturer) {
+	public ProductSearchCardNewDto(Long id, String name, String image,ManIdNameEntity manufacturer) {
 		this.id = id;
 		this.name = name;
 		this.image = image;
@@ -52,6 +56,14 @@ public class ProductSearchCardNewDto {
 	
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	public Long getCatId() {
+		return catId;
+	}
+	
+	public void setCatId(Long catId) {
+		this.catId = catId;
 	}
 	
 	public ManIdNameEntity getManufacturer() {

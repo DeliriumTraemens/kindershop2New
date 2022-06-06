@@ -1,5 +1,6 @@
 package org.mykola.kindershop2.service;
 
+import org.mykola.kindershop2.dto.ManCat;
 import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CatTempService {
@@ -96,5 +100,47 @@ public class CatTempService {
 	
 	private List<CatTemp> getAll() {
 		return catTempRepo.findAll();
+	}
+	
+//	public Manufacturer catIerarchy2(Long id) {
+	public Set<ManCat> catIerarchy2(Long id) {
+//	public List<ManCat> catIerarchy2(Long id) {
+		System.out.println("Catierarchy 2");
+		Manufacturer man = mfr.findById(id).get();
+//		System.out.println(man.getProdCatList());
+		
+		Set<ManCat> startCategoryList = new HashSet<>();
+		
+		//Fill the Total Set of categories
+		for (ProdCat prodCat : man.getProdCatList()) {
+			for (CatCategory catCategory : prodCat.getCategoryList()) {
+				startCategoryList.add(new ManCat(catCategory.getId(), catCategory.getName(), catCategory.getParentId()));
+			}
+			
+		}
+		
+		//Fill The RootList
+		Set<ManCat> rootsList = startCategoryList.stream().filter(p -> p.getParentId() == 30L).collect(Collectors.toSet());
+		
+		//Recursive setting the Childrens
+		setChildrens(startCategoryList, rootsList);
+		
+//		System.out.println("startList" + startCategoryList);
+		System.out.println("*************--== RootList ==--****************\n" + rootsList);
+
+		return rootsList;
+	}
+	
+	private void setChildrens(Set<ManCat> startCategoryList, Set<ManCat> rootsList) {
+		for (ManCat manCat : rootsList) {
+			Set<ManCat>childrens = startCategoryList.stream().filter(t -> t.getParentId().equals(manCat.getId())).collect(Collectors.toSet());
+//			System.out.println("======  CHILDRENS  ========\n" + childrens);
+			manCat.setChildren(childrens);
+			
+			//Recursion loop entrance
+			if(!manCat.getChildren().isEmpty()){
+				setChildrens( startCategoryList, manCat.getChildren());
+			}
+		}
 	}
 }

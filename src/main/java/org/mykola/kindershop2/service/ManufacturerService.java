@@ -148,7 +148,7 @@ public class ManufacturerService {
 			
 			//Сюда пихуем обработчик листа категорийДто
 			
-			catIdND2SortedList=catIdND2Sorter(catIdND2List);
+//			catIdND2SortedList=catIdND2Sorter(catIdND2List);
 //			System.out.println("SORTED catIdND2SortedList ->"+catIdND2SortedList);
 			
 			

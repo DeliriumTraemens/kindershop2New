@@ -68,6 +68,8 @@ public class ManufacturerController {
 			@RequestParam(value="catId")Long catId,
 			@RequestParam(value="manId")Long manId){
 		
+		//TODO add catId into ProductSearchCardNewDto and MAP it with a constructor
+		
 		return manService.getCatProductsList(catId, manId);
 	}
 	

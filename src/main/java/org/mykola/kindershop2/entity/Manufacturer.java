@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@ToString(of = {"id", "name"})
+@ToString(of = {"id", "name", "prodCatList"})
 @EqualsAndHashCode(of = {"id", "name"})
 //@JsonIdentityInfo(
 //		generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -38,7 +38,7 @@ public class Manufacturer {
 	@Column(name = "image")
 	private String image;
 	
-	@JsonBackReference
+//	@JsonBackReference
 	@OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER)
 //	@JoinColumn(name = "manufacturer_id")
 	private Set<ProdCat> prodCatList=new HashSet<>();
