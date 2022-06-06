@@ -48,15 +48,11 @@ public class CatTempController {
 		cts.catIerarchy2(id);
 	return ctr.findById(30L).get().getChildrenlist();
 	}
-	
+	//Рабочая версия
 	@GetMapping("/man2/{id}")
 	public Set<ManCat> filtered2(@PathVariable("id") Long id){
-//	public List<ManCat> filtered2(@PathVariable("id") Long id){
 		//Первый вариант
-//		cts.catIerarchy(id);
-//		cts.catIerarchy2(id);
 		return cts.catIerarchy2(id);
-		
 	}
 	
 	

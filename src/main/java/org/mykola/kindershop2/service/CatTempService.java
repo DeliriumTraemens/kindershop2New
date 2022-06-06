@@ -102,12 +102,10 @@ public class CatTempService {
 		return catTempRepo.findAll();
 	}
 	
-//	public Manufacturer catIerarchy2(Long id) {
+	//Manufacturer's Category Hierarchy
 	public Set<ManCat> catIerarchy2(Long id) {
-//	public List<ManCat> catIerarchy2(Long id) {
-		System.out.println("Catierarchy 2");
+		
 		Manufacturer man = mfr.findById(id).get();
-//		System.out.println(man.getProdCatList());
 		
 		Set<ManCat> startCategoryList = new HashSet<>();
 		
@@ -116,25 +114,21 @@ public class CatTempService {
 			for (CatCategory catCategory : prodCat.getCategoryList()) {
 				startCategoryList.add(new ManCat(catCategory.getId(), catCategory.getName(), catCategory.getParentId()));
 			}
-			
 		}
 		
 		//Fill The RootList
 		Set<ManCat> rootsList = startCategoryList.stream().filter(p -> p.getParentId() == 30L).collect(Collectors.toSet());
 		
-		//Recursive setting the Childrens
+		//Recursive setting the Childrens (Yes Orthography mistake)))
 		setChildrens(startCategoryList, rootsList);
 		
-//		System.out.println("startList" + startCategoryList);
-		System.out.println("*************--== RootList ==--****************\n" + rootsList);
-
 		return rootsList;
 	}
 	
 	private void setChildrens(Set<ManCat> startCategoryList, Set<ManCat> rootsList) {
 		for (ManCat manCat : rootsList) {
 			Set<ManCat>childrens = startCategoryList.stream().filter(t -> t.getParentId().equals(manCat.getId())).collect(Collectors.toSet());
-//			System.out.println("======  CHILDRENS  ========\n" + childrens);
+			
 			manCat.setChildren(childrens);
 			
 			//Recursion loop entrance
@@ -143,4 +137,4 @@ public class CatTempService {
 			}
 		}
 	}
-}
+}//EoC
