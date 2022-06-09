@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameCard;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -53,10 +54,13 @@ public class Product {
 	@Column(name ="date_modified")
 	private LocalDateTime modificationDate;
 	
+//	@OneToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "manufacturer_id")
+//	private Manufacturer manufacturer;
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manufacturer_id")
-	private Manufacturer manufacturer;
-	
+	private ManIdNameCard manufacturer;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	private Category category;

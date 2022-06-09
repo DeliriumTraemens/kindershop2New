@@ -21,10 +21,10 @@ public class ProductService {
 		this.prodRepo = prodRepo;
 	}
 	
-	
+	//Refactor to DTO
 	public ProductPageDto getProdListByCat(Long id, Pageable pageable, int page1) {
 		
-		Pageable pageRequest = PageRequest.of(page1, 5);
+		Pageable pageRequest = PageRequest.of(page1, 8);
 		Page <Product> page = prodRepo.findByCatId(id, pageRequest);
 		
 				//		Возвращаем НОВЫЙ объект, Созданный с помощью конструктора(Ctrl-P подсказывает порядок аргументов
