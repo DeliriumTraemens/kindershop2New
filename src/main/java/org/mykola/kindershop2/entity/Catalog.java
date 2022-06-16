@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 @Table(name = "oc_category")
 @EqualsAndHashCode(of = {"id", "name"})
 @SecondaryTable(name = "oc_category_description",pkJoinColumns = @PrimaryKeyJoinColumn(name = "category_id"))
-public class Catalog {
+public class Catalog implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="category_id")
@@ -39,4 +40,12 @@ public class Catalog {
 	private Set<Catalog> children= new HashSet<Catalog>();
 	
 	
+	@Override
+	public String toString() {
+		return "Catalog{" +
+				       "id=" + id +
+				       ", name='" + name + '\'' +
+				       ", children=" + children +
+				       '}';
+	}
 }

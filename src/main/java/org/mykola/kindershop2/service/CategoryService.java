@@ -1,23 +1,26 @@
 package org.mykola.kindershop2.service;
 
 import org.mykola.kindershop2.entity.Category;
+import org.mykola.kindershop2.repository.CatalogRepository;
 import org.mykola.kindershop2.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class CategoryService {
 	private final CategoryRepository catRepo;
+	private final CatalogService cataServ;
+	private final CatalogRepository cataRepo;
 	
 	@Autowired
-	public CategoryService(CategoryRepository catRepo) {
+	public CategoryService(CategoryRepository catRepo, CatalogService cataServ, CatalogRepository cataRepo) {
 		this.catRepo = catRepo;
+		this.cataServ = cataServ;
+		this.cataRepo = cataRepo;
 	}
 	
 	public Category getTopCatList() {
@@ -26,7 +29,7 @@ public class CategoryService {
 		
 	}
 	
-	public void editIerarchy(Long id, Long parentId) {
+	public void editIerarchy(Long id, Long parentId) throws IOException {
 		Category parent = catRepo.findById(parentId).get();
 		Category edited = catRepo.findById(id).get();
 		
@@ -34,6 +37,9 @@ public class CategoryService {
 		if(!id.equals(parentId)){
 			catRepo.save(edited);
 		}
+		
+		//TODO вставить метод из КаталогСервис для сериализации нового дерева
+		cataServ.writeCatalogToStringString(cataRepo.findById(30L).get());
 	}
 	
 	public void addNewSubcat(Long parentId, String name, String description) {
