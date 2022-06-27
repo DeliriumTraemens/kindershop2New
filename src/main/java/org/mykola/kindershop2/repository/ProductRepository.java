@@ -2,6 +2,7 @@ package org.mykola.kindershop2.repository;
 
 import org.mykola.kindershop2.dto.projections.ProdIdNamePrice;
 import org.mykola.kindershop2.entity.Product;
+import org.mykola.kindershop2.entity.product.projections.ProdIdNameImageManCat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	
 	List<ProdIdNamePrice> findOneById(Long id);
 	List<ProdIdNamePrice> findOneByNameStartingWith(String name);
+	
+//	List <interface> findByNameContaining
+	List <ProdIdNameImageManCat> findListByNameContaining(String name);
 	
 //	List<ProdIdNamePrice> namePriceById(Long id);
 }

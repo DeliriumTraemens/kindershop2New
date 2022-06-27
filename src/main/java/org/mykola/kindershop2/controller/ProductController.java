@@ -76,8 +76,13 @@ public class ProductController {
 	@PostMapping("/search")
 	public List<Product> searchProduct(@RequestParam(value = "name") String name) {
 		List<Product> searchList = prodService.liveSearch(name);
-		System.out.println(searchList);
+//		System.out.println(searchList);
 		return searchList;
+	}
+	
+	@PostMapping("/search/sample")
+	public String searchBySample(@RequestParam("sample")String sample){
+		return null;
 	}
 
 //

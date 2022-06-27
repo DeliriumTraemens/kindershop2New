@@ -1,8 +1,12 @@
 package org.mykola.kindershop2.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mykola.kindershop2.entity.*;
+import org.mykola.kindershop2.entity.manufacturer.ManNamePrj;
 import org.mykola.kindershop2.entity.tmpDto.CatTemp;
 import org.mykola.kindershop2.repository.*;
 import org.mykola.kindershop2.repository.temp.CatTempRepo;
@@ -11,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -289,4 +294,37 @@ public class ManufacturerServiceTest {
 		System.out.println("main -> "+main);
 		System.out.println("find All "+catTempRepo.findAll());
 	}
+	
+	@Test
+	public void alphabetBuilder() throws JsonProcessingException {
+		SortedSet<Character> charAlpha = new TreeSet<>();
+		List <ManNamePrj> initialSet= manRepo.findNames();
+		//good
+		List<Character> firstLetters2 = initialSet.stream().map(chr -> chr.getName().charAt(0)).distinct().collect(Collectors.toList());
+		List<Character> firstLetters = initialSet.stream().map(chr -> chr.getName().charAt(0)).collect(Collectors.toList());
+		
+		System.out.println("\n=========-----firstLetters2----==========");
+		System.out.println(firstLetters2);
+		
+		
+		for (Character firstLetter : firstLetters) {
+			charAlpha.add(firstLetter);
+		}
+		
+		System.out.println("\n===========-- charAlpha --============");
+		System.out.println(charAlpha);
+		
+		ObjectMapper objMapper =new ObjectMapper();
+		String alphabetMan = objMapper.writeValueAsString(firstLetters2);
+		System.out.println("\n================-- alphabetMan --=========");
+		System.out.println(alphabetMan);
+	}
+	
+//	@Test
+//	public void findSmall(){
+//		List<ManNamePrj>small=manRepo.findByNameStartingWith('d');
+//		System.out.println("Found " + small.size() + " elements");
+//		List<String> foundList = small.stream().map(e -> e.getName()).distinct().collect(Collectors.toList());
+//		System.out.println(foundList);
+//	}
 }

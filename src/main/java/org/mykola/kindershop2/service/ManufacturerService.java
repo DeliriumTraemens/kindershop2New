@@ -1,5 +1,10 @@
+/*
+* 1-FindAll
+* */
 package org.mykola.kindershop2.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardNewDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
@@ -8,6 +13,7 @@ import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNamePick;
 import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
+import org.mykola.kindershop2.entity.manufacturer.ManNamePrj;
 import org.mykola.kindershop2.entity.tmpDto.CatIdNameDto2;
 import org.mykola.kindershop2.entity.tmpDto.CatTemp;
 import org.mykola.kindershop2.entity.tmpDto.CatTempSave;
@@ -73,10 +79,12 @@ public class ManufacturerService {
 //		this.prodCatRepo = prodCatRepo;
 //	}
 	
+	//======== 1-FindAll ==========
 	public List<Manufacturer> findAll() {
 		return manRepo.findAll();
 	}
 	
+	//======== 2-EditPicture ==========
 	public ManIdNamePickPageDto editPicture(Long id, MultipartFile file, int page) throws IOException {
 		
 		Manufacturer edited = manRepo.findById(id).get();
@@ -101,14 +109,14 @@ public class ManufacturerService {
 		return findRequestedPage(page);
 	}
 	
-	
+	//======== 3-FindAllPaged ==========
 	public ManIdNamePickPageDto findAllPaged() {
 		Pageable pageRequest = PageRequest.of(0, 9);
 //		Page <Manufacturer> manPage = manRepo.findAll(pageRequest);
 		Page<ManIdNamePick> manPage = manRepo.getAll(pageRequest);
 		return new ManIdNamePickPageDto(manPage.getContent(), 0, manPage.getTotalPages());
 	}
-	
+	//======== 4-FindRequestedPage ==========
 	public ManIdNamePickPageDto findRequestedPage(int page) {
 		Pageable pageRequest = PageRequest.of(page, 9);
 //		Page<ManIdNamePick> manPage = manRepo.findAll(pageRequest);
@@ -276,4 +284,41 @@ public class ManufacturerService {
 	}
 		
 	
+	//Alphabet Builder
+	public List <Character> alphabetBuilder (){
+		List <ManNamePrj> initialSet= manRepo.findNames();
+		//good
+		List<Character> firstLetters2 = initialSet.stream().map(chr -> chr.getName().charAt(0)).distinct().collect(Collectors.toList());
+//		ObjectMapper objMapper =new ObjectMapper();
+//		String alphabetMan = objMapper.writeValueAsString(firstLetters2);
+		System.out.println(firstLetters2);
+		return firstLetters2;
+	}
+	
+	public List<ManIdNamePick> findLetter(String letter) {
+		return manRepo.findByNameStartingWith(letter);
+	}
+	
+	public List<ManIdNamePick> editPictureAlphabet(Long id, String letter, MultipartFile file) throws IOException {
+		Manufacturer edited = manRepo.findById(id).get();
+
+//		Directory path
+		String pathToSave = uploadPath + "/manufacture/";
+		
+		//		MkDir
+		File pathMaker = new File(pathToSave);
+		if (! pathMaker.exists()) {
+			pathMaker.mkdir();
+		}
+		
+		edited.setImage("manufacture/" + file.getOriginalFilename());
+		//upload path check
+//		file.transferTo(new File(uploadPath+"/"+file.getOriginalFilename()));
+		file.transferTo(new File(pathToSave + file.getOriginalFilename()));
+		
+		manRepo.save(edited);
+		
+		return manRepo.findByNameStartingWith(letter);
+		
+	}
 } // CLASS END

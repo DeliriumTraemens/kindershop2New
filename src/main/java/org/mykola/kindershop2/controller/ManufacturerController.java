@@ -5,6 +5,7 @@ import org.mykola.kindershop2.dto.ManIdNamePickPageDto;
 import org.mykola.kindershop2.dto.prodSearchCardDto.ProductSearchCardNewDto;
 import org.mykola.kindershop2.dto.projections.CatIdNameDto;
 import org.mykola.kindershop2.dto.projections.ManIdName;
+import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNamePick;
 import org.mykola.kindershop2.entity.CatCategory;
 import org.mykola.kindershop2.entity.Manufacturer;
 import org.mykola.kindershop2.entity.ProdCat;
@@ -50,6 +51,16 @@ public class ManufacturerController {
 //	public ManufacturerPageDto getManufacturerPage(@RequestParam(value = "page") int page){
 //		return manService.findRequestedPage(page);
 //	}
+	
+	@GetMapping("/alphabet")
+	public List<Character> alphaBuild(){
+		return manService.alphabetBuilder();
+	}
+	
+	@GetMapping("/letter")
+	public List<ManIdNamePick>manLetter(@RequestParam("letter")String letter){
+		return manService.findLetter(letter);
+	}
 	
 	@GetMapping("/page")
 	public ManIdNamePickPageDto getManufacturerPage(@RequestParam(value = "page") int page){
@@ -195,6 +206,14 @@ public class ManufacturerController {
 	                                  @RequestParam("file")MultipartFile file,
 	                                  @RequestParam("page") int page) throws IOException {
 		return manService.editPicture(id, file, page);
+	}
+	
+	@PostMapping("/editPickAlphabet")
+	public List<ManIdNamePick> editPickAlphabet(@RequestParam("id")Long id,
+	                                            @RequestParam("letter")String letter,
+	                                            @RequestParam("file")MultipartFile file) throws IOException {
+		return manService.editPictureAlphabet(id, letter, file);
+
 	}
 	
 }
