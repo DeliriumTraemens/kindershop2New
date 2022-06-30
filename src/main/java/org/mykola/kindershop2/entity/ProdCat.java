@@ -44,6 +44,7 @@ public class ProdCat {
 	
 //	@JsonIgnore
 	@JsonManagedReference
+	@OrderBy("name ASC")
 	@ManyToOne//(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manufacturer_id")
 //	private Manufacturer manufacturer;

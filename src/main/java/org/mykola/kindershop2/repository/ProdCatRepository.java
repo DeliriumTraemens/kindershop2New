@@ -22,4 +22,6 @@ public interface ProdCatRepository extends JpaRepository<ProdCat, Long> {
 	Set<ProdCat> findByCatIdAndManufacturer(Long catId, ManIdNameEntity manufacturer);
 	
 	List<ProdCat> findByManufacturerAndCatId(ManIdNameEntity manufacturer, Long catId);
+	
+	Set<ProdCat> findDistinctByNameContainingOrderByManufacturer(String name);
 }
