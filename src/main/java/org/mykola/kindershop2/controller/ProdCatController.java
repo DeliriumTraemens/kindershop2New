@@ -8,6 +8,7 @@ import org.mykola.kindershop2.service.ProdCatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -37,6 +38,11 @@ public class ProdCatController {
 	@PostMapping("/find")
 	public ProductFind2Dto findProducts(@RequestParam("name")String name){
 		return pcs.findProducts(name);
+	}
+	
+	@PostMapping("/manFilter")
+	public Set<ProdCat> manFilter(@RequestParam("id")Long id, @RequestParam("name")String name ){
+		return pcs.manufacturersFilter(id, name);
 	}
 	
 }

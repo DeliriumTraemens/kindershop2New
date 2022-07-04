@@ -50,6 +50,9 @@ public class ProdCat {
 //	private Manufacturer manufacturer;
 	private ManIdNameEntity manufacturer;
 	
+	@Column(name = "price")
+	private Float price;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 //	@JsonIgnore
 	@JsonManagedReference 
