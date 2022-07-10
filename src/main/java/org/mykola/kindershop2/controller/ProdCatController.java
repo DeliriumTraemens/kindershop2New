@@ -13,6 +13,8 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://192.168.1.68:8080", methods = { RequestMethod.DELETE, RequestMethod.GET, RequestMethod.OPTIONS,
+//                                        RequestMethod.POST, RequestMethod.PUT }, allowedHeaders = "*", exposedHeaders = "*")
 @RequestMapping("/prodcat")
 public class ProdCatController {
 	private final ProdCatRepository prodCatRepo;

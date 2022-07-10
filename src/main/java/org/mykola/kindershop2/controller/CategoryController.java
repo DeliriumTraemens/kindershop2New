@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://192.168.1.68:8080", methods = { RequestMethod.DELETE, RequestMethod.GET, RequestMethod.OPTIONS,
+//                                        RequestMethod.POST, RequestMethod.PUT }, allowedHeaders = "*", exposedHeaders = "*")
 public class CategoryController {
 	
 	private final CategoryService catService;

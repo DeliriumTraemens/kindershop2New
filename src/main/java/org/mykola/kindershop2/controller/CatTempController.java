@@ -17,6 +17,8 @@ import java.util.Set;
 @RestController
 @RequestMapping("/cattemp")
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://192.168.1.68:8080", methods = { RequestMethod.DELETE, RequestMethod.GET, RequestMethod.OPTIONS,
+//                                        RequestMethod.POST, RequestMethod.PUT }, allowedHeaders = "*", exposedHeaders = "*")
 public class CatTempController {
 	@Autowired
 	CatTempRepo catTempRepo;

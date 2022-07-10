@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://192.168.1.68:8080", methods = { RequestMethod.DELETE, RequestMethod.GET, RequestMethod.OPTIONS,
+//                                        RequestMethod.POST, RequestMethod.PUT }, allowedHeaders = "*", exposedHeaders = "*")
 @RequestMapping("/manufacturer")
 public class ManufacturerController {
 	public static final int ITEMS_PER_PAGE=20;
