@@ -1,6 +1,8 @@
 package org.mykola.kindershop2.service;
 
 import org.mykola.kindershop2.dto.ProductPageDto;
+import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameCard;
+import org.mykola.kindershop2.dto.projections.product.ProdIdNameMan;
 import org.mykola.kindershop2.entity.Product;
 import org.mykola.kindershop2.repository.ManufacturerRepository;
 import org.mykola.kindershop2.repository.ProductRepository;
@@ -8,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -26,10 +31,17 @@ public class ProductService {
 		
 		Pageable pageRequest = PageRequest.of(page1, 15);
 		Page <Product> page = prodRepo.findByCatId(id, pageRequest);
-		
-				//		Возвращаем НОВЫЙ объект, Созданный с помощью конструктора(Ctrl-P подсказывает порядок аргументов
+//		List<ProdIdNameMan> prodMans = prodRepo.findAllByCatId(id);
+//		List<ManIdNameCard> sortedManufacturers = prodMans.stream().map(p -> p.getManufacturer()).distinct()
+		List<ManIdNameCard> sortedManufacturers = prodRepo.findAllByCatId(id).stream().map(p -> p.getManufacturer()).distinct()
+				.sorted(Comparator.comparing(ManIdNameCard::getName)).collect(Collectors.toList());
+		sortedManufacturers.forEach(System.out::println);
+
+
+		//		Возвращаем НОВЫЙ объект, Созданный с помощью конструктора(Ctrl-P подсказывает порядок аргументов
 				//		— соответствующий порядку объявления полей в классе)
 		return new ProductPageDto(page.getContent(),
+		                          sortedManufacturers,
 		                          pageable.getPageNumber(),
 		                          page.getTotalPages());
 	}

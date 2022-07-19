@@ -1,6 +1,7 @@
 package org.mykola.kindershop2.repository;
 
 import org.mykola.kindershop2.dto.projections.ProdIdNamePrice;
+import org.mykola.kindershop2.dto.projections.product.ProdIdNameMan;
 import org.mykola.kindershop2.entity.Product;
 import org.mykola.kindershop2.entity.product.projections.ProdIdNameImageManCat;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	
 //	List <interface> findByNameContaining
 	List <ProdIdNameImageManCat> findListByNameContaining(String name);
-	
+
+	@Query("SELECT p FROM Product p WHERE p.catId = :id")
+	List<ProdIdNameMan> findAllByCatId(@Param("id") Long id);
+
 //	List<ProdIdNamePrice> namePriceById(Long id);
 }
