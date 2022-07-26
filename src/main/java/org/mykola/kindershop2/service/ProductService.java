@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -31,17 +32,24 @@ public class ProductService {
 		
 		Pageable pageRequest = PageRequest.of(page1, 15);
 		Page <Product> page = prodRepo.findByCatId(id, pageRequest);
-//		List<ProdIdNameMan> prodMans = prodRepo.findAllByCatId(id);
-//		List<ManIdNameCard> sortedManufacturers = prodMans.stream().map(p -> p.getManufacturer()).distinct()
-		List<ManIdNameCard> sortedManufacturers = prodRepo.findAllByCatId(id).stream().map(p -> p.getManufacturer()).distinct()
+		List<ProdIdNameMan> prodMans = prodRepo.findAllByCatId(id);
+		List<ManIdNameCard> sortedManufacturers = prodMans.stream().map(p -> p.getManufacturer()).distinct()
 				.sorted(Comparator.comparing(ManIdNameCard::getName)).collect(Collectors.toList());
-		sortedManufacturers.forEach(System.out::println);
+		Set<Float> prices = prodMans.stream().map(p->p.getPrice()).collect(Collectors.toSet());
+		int minPrice = prices.stream().min(Comparator.naturalOrder()).get().intValue();
+		int maxPrice = prices.stream().max(Comparator.naturalOrder()).get().intValue();
 
+
+
+//		sortedManufacturers.forEach(System.out::println);
+//		List<ManIdNameCard> sortedManufacturers = prodMans.stream().map(p -> p.getManufacturer()).distinct()
 
 		//		Возвращаем НОВЫЙ объект, Созданный с помощью конструктора(Ctrl-P подсказывает порядок аргументов
 				//		— соответствующий порядку объявления полей в классе)
 		return new ProductPageDto(page.getContent(),
 		                          sortedManufacturers,
+		                          minPrice,
+		                          maxPrice,
 		                          pageable.getPageNumber(),
 		                          page.getTotalPages());
 	}

@@ -15,6 +15,8 @@ import java.util.List;
 public class ProductPageDto {
 	private List<Product> products;
 	private List<ManIdNameCard> manufacturers;
+	private int minPrice;
+	private int maxPrice;
 //	private List<ManIdNameFilter> manufacturers;
 	private int currentPage;
 	private int totalPages;
