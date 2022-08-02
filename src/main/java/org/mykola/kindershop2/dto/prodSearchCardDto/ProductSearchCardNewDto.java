@@ -11,6 +11,7 @@ public class ProductSearchCardNewDto {
 	private Long id;
 	private String name;
 	private String image;
+	private Float price;
 	
 	
 	
@@ -26,10 +27,11 @@ public class ProductSearchCardNewDto {
 	public ProductSearchCardNewDto() {
 	}
 	
-	public ProductSearchCardNewDto(Long id, String name, String image,ManIdNameEntity manufacturer) {
+	public ProductSearchCardNewDto(Long id, String name, String image, Float price, ManIdNameEntity manufacturer) {
 		this.id = id;
 		this.name = name;
 		this.image = image;
+		this.price = price;
 		this.manufacturer = manufacturer;
 	}
 	//GetSet

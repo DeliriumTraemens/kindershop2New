@@ -138,6 +138,7 @@ public class ManufacturerService {
 	//For ProductSearchCard List @GetMapping("/catprod")
 	public List<ProductSearchCardNewDto> getCatProductsList(Long catId, Long manId) {
 		ManIdNameEntity manufacturer = manIdNameDtoRepo.findById(manId).get();
+
 		List<ProdCat> prodsCatsList = prodCatRepo.findByManufacturerAndCatId(manufacturer, catId);
 		List<CatIdNameDto2>catIdND2List = new ArrayList<>();
 		List<CatIdNameDto2>catIdND2SortedList = new ArrayList<>();
@@ -161,7 +162,12 @@ public class ManufacturerService {
 			
 			
 			// Итоговая карточка товара для вывода
-			ProductSearchCardNewDto prSCDto = new ProductSearchCardNewDto(prodCat.getId(), prodCat.getName(),prodCat.getImage(),prodCat.getManufacturer());
+			ProductSearchCardNewDto prSCDto = new ProductSearchCardNewDto(
+					prodCat.getId(),
+					prodCat.getName(),
+					prodCat.getImage(),
+					prodCat.getPrice(),
+					prodCat.getManufacturer());
 									//TODO replace plain argument with a method -- catIdND2Sorter(catIdND2List)
 //									prSCDto.setCategoryList(catIdND2SortedList);
 									prSCDto.setCategoryList( catIdND2Sorter(catIdND2List) );

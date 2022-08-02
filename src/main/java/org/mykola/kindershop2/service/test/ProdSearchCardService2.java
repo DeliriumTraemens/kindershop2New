@@ -66,7 +66,10 @@ public class ProdSearchCardService2 {
 		System.out.println("Sorted ->->" + sortedCats);
 		
 		/*Id name image manufacturer*/
-		ProductSearchCardNewDto prodDto=new ProductSearchCardNewDto(product.getId(), product.getName(),product.getImage(),product.getManufacturer());
+		ProductSearchCardNewDto prodDto=new ProductSearchCardNewDto(
+				product.getId(), product.getName(),product.getImage(),
+				product.getPrice(),
+				product.getManufacturer());
 		prodDto.setCategoryList(sortedCats);
 		
 		return prodDto;
