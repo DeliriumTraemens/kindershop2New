@@ -63,7 +63,18 @@ public class ProductController {
 //		return proRepo.getProducts(4276L);
 		return projList;
 	}
-	
+
+	@PostMapping("/filter")
+//	public ProductPageDto getFiltered(
+	public String getFiltered(
+			@RequestParam(value="catId") Long catId,
+			@RequestParam(value="manufacturers")List<Long> manList
+	){
+		System.out.println("========== FilterRequest");
+				prodService.getFiltered(catId, manList);
+		return "Resulted";
+	}
+
 	@GetMapping("/{id}")
 	public ProductPageDto getProdQuery(
 			@PathVariable(value = "id") Long id,

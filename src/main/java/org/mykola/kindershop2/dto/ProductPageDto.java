@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class ProductPageDto {
+//	private List<ProdIdNameMan> products;
 	private List<Product> products;
 	private List<ManIdNameCard> manufacturers;
 	private int minPrice;

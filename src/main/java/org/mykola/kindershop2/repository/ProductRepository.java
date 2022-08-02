@@ -1,6 +1,7 @@
 package org.mykola.kindershop2.repository;
 
 import org.mykola.kindershop2.dto.projections.ProdIdNamePrice;
+import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameCard;
 import org.mykola.kindershop2.dto.projections.product.ProdIdNameMan;
 import org.mykola.kindershop2.entity.Product;
 import org.mykola.kindershop2.entity.product.projections.ProdIdNameImageManCat;
@@ -35,6 +36,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	@Query("SELECT p FROM Product p WHERE p.catId = :id")
 	List<ProdIdNameMan> findAllByCatId(@Param("id") Long id);
+
+    List<ProdIdNameMan> findDistinctByCatIdAndManufacturerIn(Long catId, List<ManIdNameCard> manList);
 
 //	List<ProdIdNamePrice> namePriceById(Long id);
 }

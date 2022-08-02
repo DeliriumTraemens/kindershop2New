@@ -1,9 +1,11 @@
 package org.mykola.kindershop2.service;
 
+import org.mykola.kindershop2.dto.ProductFilterDto;
 import org.mykola.kindershop2.dto.ProductPageDto;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameCard;
 import org.mykola.kindershop2.dto.projections.product.ProdIdNameMan;
 import org.mykola.kindershop2.entity.Product;
+import org.mykola.kindershop2.repository.ManIdNameCardRepo;
 import org.mykola.kindershop2.repository.ManufacturerRepository;
 import org.mykola.kindershop2.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 	private final ManufacturerRepository manRepo;
+	private final ManIdNameCardRepo manIdNameRepo;
 	private final ProductRepository prodRepo;
 	
 	@Autowired
-	public ProductService(ManufacturerRepository manRepo, ProductRepository prodRepo) {
+	public ProductService(ManufacturerRepository manRepo, ManIdNameCardRepo manIdNameRepo, ProductRepository prodRepo) {
 		this.manRepo = manRepo;
+		this.manIdNameRepo = manIdNameRepo;
 		this.prodRepo = prodRepo;
 	}
 	
@@ -60,5 +64,30 @@ public class ProductService {
 	
 	public List<Product> liveSearch(String name) {
 		return prodRepo.findByNameContaining(name);
+	}
+
+	public void getFiltered(Long catId, List<Long> manList) {
+		List<ProductPageDto>productsToSend=new ArrayList<>();
+		List<ManIdNameCard> manToFilter=manIdNameRepo.findAllById(manList);
+		System.out.println("============Manufacturers");
+		System.out.println(manToFilter);
+		List<ProdIdNameMan> firstFiltered = prodRepo.findDistinctByCatIdAndManufacturerIn(catId, manToFilter);
+
+		Set<Float> prices =firstFiltered.stream().map(t->t.getPrice()).collect(Collectors.toSet());
+		int minPrice = prices.stream().min(Comparator.naturalOrder()).get().intValue();
+		int maxPrice = prices.stream().max(Comparator.naturalOrder()).get().intValue();
+
+		System.out.println("=============FILTERED PRODUCTS");
+		for (ProdIdNameMan prodIdNameMan : firstFiltered) {
+			System.out.println(prodIdNameMan.getName());
+//			productsToSend.add(new ProductPageDto() );
+		}
+//		ProductPageDto prodListToSend = new ProductPageDto(
+//				firstFiltered,
+//				manToFilter,minPrice,maxPrice,0,1);
+//
+//		);
+
+//		return null;
 	}
 }
