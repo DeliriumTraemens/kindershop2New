@@ -65,14 +65,14 @@ public class ProductController {
 	}
 
 	@PostMapping("/filter")
-//	public ProductPageDto getFiltered(
-	public String getFiltered(
+	public ProductPageDto getFiltered(
+//	public String getFiltered(
 			@RequestParam(value="catId") Long catId,
 			@RequestParam(value="manufacturers")List<Long> manList
 	){
 		System.out.println("========== FilterRequest");
 				prodService.getFiltered(catId, manList);
-		return "Resulted";
+		return prodService.getFiltered(catId, manList);
 	}
 
 	@GetMapping("/{id}")

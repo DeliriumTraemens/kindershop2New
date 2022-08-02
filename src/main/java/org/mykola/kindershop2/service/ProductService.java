@@ -35,7 +35,8 @@ public class ProductService {
 	public ProductPageDto getProdListByCat(Long id, Pageable pageable, int page1) {
 		
 		Pageable pageRequest = PageRequest.of(page1, 15);
-		Page <Product> page = prodRepo.findByCatId(id, pageRequest);
+//		Page <Product> page = prodRepo.findByCatId(id, pageRequest);
+		Page <ProdIdNameMan> page = prodRepo.findByCatId(id, pageRequest);
 		List<ProdIdNameMan> prodMans = prodRepo.findAllByCatId(id);
 		List<ManIdNameCard> sortedManufacturers = prodMans.stream().map(p -> p.getManufacturer()).distinct()
 				.sorted(Comparator.comparing(ManIdNameCard::getName)).collect(Collectors.toList());
@@ -66,7 +67,7 @@ public class ProductService {
 		return prodRepo.findByNameContaining(name);
 	}
 
-	public void getFiltered(Long catId, List<Long> manList) {
+	public ProductPageDto getFiltered(Long catId, List<Long> manList) {
 		List<ProductPageDto>productsToSend=new ArrayList<>();
 		List<ManIdNameCard> manToFilter=manIdNameRepo.findAllById(manList);
 		System.out.println("============Manufacturers");
@@ -80,14 +81,9 @@ public class ProductService {
 		System.out.println("=============FILTERED PRODUCTS");
 		for (ProdIdNameMan prodIdNameMan : firstFiltered) {
 			System.out.println(prodIdNameMan.getName());
-//			productsToSend.add(new ProductPageDto() );
 		}
-//		ProductPageDto prodListToSend = new ProductPageDto(
-//				firstFiltered,
-//				manToFilter,minPrice,maxPrice,0,1);
-//
-//		);
 
-//		return null;
+
+		return new ProductPageDto(firstFiltered,null,minPrice,maxPrice,0,0);
 	}
 }

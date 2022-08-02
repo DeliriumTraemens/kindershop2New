@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mykola.kindershop2.dto.projections.ManIdName;
 import org.mykola.kindershop2.dto.projections.manufacturer.ManIdNameCard;
+import org.mykola.kindershop2.dto.projections.product.ProdIdNameMan;
 import org.mykola.kindershop2.entity.Product;
 
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class ProductPageDto {
-//	private List<ProdIdNameMan> products;
-	private List<Product> products;
+	private List<ProdIdNameMan> products;
+//	private List<Product> products;
 	private List<ManIdNameCard> manufacturers;
 	private int minPrice;
 	private int maxPrice;

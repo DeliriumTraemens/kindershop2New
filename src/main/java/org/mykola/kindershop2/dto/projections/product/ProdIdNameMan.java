@@ -6,5 +6,6 @@ public interface ProdIdNameMan {
     Long getId();
     String getName();
     Float getPrice();
+    String getImage();
     ManIdNameCard getManufacturer();
 }

@@ -20,8 +20,9 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	
 	@Query("SELECT p FROM Product p WHERE p.catId = :id")
-	Page <Product> findByCatId(@Param("id") Long id, Pageable pageable);
-	
+	Page <ProdIdNameMan> findByCatId(@Param("id") Long id, Pageable pageable);
+//	Page <Product> findByCatId(@Param("id") Long id, Pageable pageable);
+
 	
 	@Query(value = "SELECT p.name AS name, p.price AS price, p.image AS image FROM Product p WHERE p.catId = :id")
 	List<Object[]> getProducts(@Param("id") Long id);
